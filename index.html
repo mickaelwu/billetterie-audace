@@ -935,6 +935,7 @@ li.ok .ld2 path { transition: stroke-dashoffset .3s .6s cubic-bezier(.65,0,.35,1
 .lp-check li span { display: flex; flex-direction: column; gap: 3px; font-size: 14.5px; line-height: 1.4; color: var(--fg-2); }
 .lp-check li strong { font-size: 16.5px; color: var(--fg); }
 .lp-parents { padding: 20px 18px; border-radius: 22px; background: var(--card); }
+.lp-ytp { margin-top: 6px; }
 .lp-vidw { position: relative; margin-top: 6px; border-radius: 18px; overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
 .lp-vid { width: 100%; height: 100%; display: block; object-fit: contain; }
 .lp-play { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border: 0; border-radius: 50%; background: rgba(255,255,255,.92); color: #131517; display: grid; place-items: center; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
@@ -1195,7 +1196,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
         <div class="ev-reg-b">
           <div class="ev-going"><span class="avs"><img src="img/t-baptiste.jpg" alt=""><img src="img/t-mayline.jpg" alt=""><img src="img/d-astro.jpg" alt=""><img src="img/t-fanwu.jpg" alt=""><img src="img/d-anes.jpg" alt=""></span><span>Les élèves AUDACE à +5&nbsp;000&nbsp;€/mois seront là</span></div>
           <p><b>30 €</b> ta place, -50 % pour tes proches.</p>
-          <a class="btn-light ev-btn" data-pay href="https://buy.stripe.com/aFafZi2qD8sBdzp7Llgbm1x" target="_blank" rel="noopener">Réserver ma place</a>
+          <a class="btn-light ev-btn" data-pay href="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z" target="_blank" rel="noopener">Réserver ma place</a>
         </div>
       </div>
       <div class="ev-host"><span class="ev-host-av ev-ph"><img src="img/yt-micka.jpg" alt="Mickaël Wu"></span><div><small>Présenté par</small><b>AUDACE · Mickaël Wu</b></div></div>
@@ -1258,7 +1259,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
     </div>
     <div class="there">
       <p>Ils seront tous là le 5 décembre. Viens les rencontrer.</p>
-      <a class="btn-light" data-pay href="https://buy.stripe.com/aFafZi2qD8sBdzp7Llgbm1x" target="_blank" rel="noopener">Réserver ma place · 30 €</a>
+      <a class="btn-light" data-pay href="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z" target="_blank" rel="noopener">Réserver ma place · 30 €</a>
     </div>
   </section>
 
@@ -1300,7 +1301,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
         </ul>
       </div>
       <div class="cta">
-        <a class="btn" id="pay" data-pay href="https://buy.stripe.com/aFafZi2qD8sBdzp7Llgbm1x" target="_blank" rel="noopener">Réserver ma place</a>
+        <a class="btn" id="pay" data-pay href="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z" target="_blank" rel="noopener">Réserver ma place</a>
         <div class="small">Paiement sécurisé par carte bancaire</div>
       </div>
     </div>
@@ -1358,7 +1359,8 @@ const $frame = (() => {
 })();
 function toTop(){ window.scrollTo(0, 0); if ($frame) $frame.scrollTop = 0; }
 
-const STRIPE ="https://buy.stripe.com/aFafZi2qD8sBdzp7Llgbm1x";
+const STRIPE ="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z";
+const STRIPE_PROCHES ="https://buy.stripe.com/14AaEY8P1eQZ52T2r1gbm1y";   // 30 € + 15 € par proche (1 à 4, modifiable sur Stripe)
 
 /* Photos AUDACE (workshops et communauté) */
 const TICKER = [
@@ -2216,7 +2218,7 @@ function payHref(){
   const q = [];
   if (complete()) q.push("client_reference_id=" + encodeURIComponent(code.slice(0, 200)));
   if (emailOk()) q.push("prefilled_email=" + encodeURIComponent(S.answers.email.trim()));
-  return STRIPE + (q.length ? "?" + q.join("&") : "");
+  return (potes() ? STRIPE_PROCHES : STRIPE) + (q.length ? "?" + q.join("&") : "");
 }
 function ticketScreen(){
   const VALUE = [["Un échange direct avec les intervenants AUDACE, à plus de 100\u00a0000\u00a0€ par mois", 500], ["Ton dîner de 4 composé pour toi, avec un coach AUDACE", 200], ["Le networking avec 200 entrepreneurs", 200], ["Ta soirée dans un lieu privé à Paris", 50], ["Pizza et gaufre glacée offertes", 20]];
@@ -2252,7 +2254,7 @@ function ticketScreen(){
         <p>Tes parents sont peut-être un peu sceptiques. C'est normal : ils ne connaissent pas encore ce monde-là.</p>
         <p>Le 5 décembre, ils rencontrent des jeunes qui pensent comme toi, mais aussi des gens de leur âge, qui ont déjà réussi. Ils découvrent l'IA de pointe et le marketing de demain, un monde qu'ils ne connaissent pas forcément.</p>
         <p class="lp-pill">Leur place : 15 € au lieu de 30 €</p>
-        <div class="lp-vidw"><video class="lp-vid" src="vid/parents2.mp4" poster="img/v-parents2.jpg" playsinline preload="metadata" onended="this.parentNode.classList.remove('on')"></video><button class="lp-play" type="button" aria-label="Lancer la vidéo pour les parents" onclick="var w=this.parentNode,v=w.querySelector('video');w.classList.add('on');v.controls=true;v.play();"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg></button></div>
+        <div class="yt-frame lp-ytp"><a class="yt-thumb" href="https://youtu.be/HAjJmkcH0M0" target="_blank" rel="noopener" aria-label="Vidéo pour les parents sur YouTube"><img src="https://i.ytimg.com/vi/HAjJmkcH0M0/hqdefault.jpg" alt="" loading="lazy"><span class="yt-btn"><svg viewBox="0 0 68 48"><path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C55.2.3 34 .3 34 .3s-21.2 0-26.5 1.4a8.5 8.5 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.5 8.5 0 0 0 6 6C12.8 47.7 34 47.7 34 47.7s21.2 0 26.5-1.4a8.5 8.5 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3z" fill="#f00"/><path d="M45 24 27 14v20z" fill="#fff"/></svg></span></a></div>
       </section>
 
       <section class="lp-sec">
@@ -2271,7 +2273,8 @@ function ticketScreen(){
         </figure>
         <p>Le FC Chinois, c'est mon groupe de potes. Grâce à eux, j'ai développé mon physique, et à Dauphine, je suis entré dans le top 20 de la promo.</p>
         <p>Ils étaient là au tout début, quand je venais de lancer ma chaîne YouTube. On faisait des vlogs ensemble. Aujourd'hui, je gagne plus de 300 000 € par mois. Maxime a ses deux business et 500 000 abonnés sur tous ses réseaux. Et on continue de se tirer vers le haut.</p>
-        <p>C'est ton entourage qui façonne qui tu deviens. Le 5 décembre, viens trouver le tien.</p>
+        <p>C'est ton entourage qui façonne qui tu deviens.</p>
+        <p>Le 5 décembre, viens trouver le tien.</p>
         <p class="lp-sign">Micka</p>
       </section>
 
