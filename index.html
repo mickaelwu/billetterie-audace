@@ -1047,7 +1047,7 @@ a.q-btn.tk-pay { display: flex; align-items: center; justify-content: center; te
 /* Table de 4 vue du dessus (bois, assiettes, pizza) : toi en bas, les 3 autres assis autour */
 .tl-ready .rt2[hidden] { display: none; }
 .tl-ready .rt.rt2 { width: min(100%, 300px, 35vh); aspect-ratio: 1; margin: 50px auto 36px; --av: clamp(54px, 7.4vh, 78px); }
-.tl-diner .rt.rt2 { width: min(100%, 330px, 40vh); margin: 44px auto 40px; --av: clamp(60px, 8.4vh, 88px); }
+.tl-diner .rt.rt2 { width: min(100%, 330px, 40vh); margin: 44px auto 40px; --av: clamp(50px, 7vh, 74px); }
 .rt2 .rt-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; animation: rtTableIn .7s cubic-bezier(.22,1,.36,1) both; }
 .tl-ready .rt2 .rt-seat { width: var(--av); height: var(--av); margin: calc(var(--av) / -2) 0 0 calc(var(--av) / -2); display: block; }
 .rt2 .rt-me { left: 50%; top: 89%; } .rt2 .rt-s1 { left: 11%; top: 50%; } .rt2 .rt-s2 { left: 50%; top: 11%; } .rt2 .rt-s3 { left: 89%; top: 50%; }
@@ -1273,7 +1273,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
       </div>
       <div class="item">
         <img class="item-t item-img" src="img/x-pizza.jpg" alt="Pizza servie à table">
-        <h3>Dîner à 4 entrepreneurs</h3>
+        <h3>Dîner à 6 entrepreneurs</h3>
         <p>Composée à partir de tes réponses. Un jeu pour briser la glace, et pizza et gaufre avec sa boule de glace offertes.</p>
       </div>
       <div class="item">
@@ -1707,7 +1707,7 @@ const prev = () => { let i = S.idx - 1; while (["loading", "analyse", "genial", 
 
 let loadTimer = null;
 function loadingScreen(){
-  const items = ["Tes 3 entrepreneurs pour le dîner", S.answers.askNone ? "Ton profil envoyé à Mickaël" : "Ta question envoyée à Mickaël", "Coaching AUDACE", "Networking avec 200 entrepreneurs"];
+  const items = ["Tes 5 entrepreneurs pour le dîner", S.answers.askNone ? "Ton profil envoyé à Mickaël" : "Ta question envoyée à Mickaël", "Coaching AUDACE", "Networking avec 200 entrepreneurs"];
   /* Les captures WhatsApp du 25 octobre sont affichées telles quelles plus bas */
   const wa = [
     ["MrDreamax Cyril", "Merci Micka, c'était insane !!", "10:26"],
@@ -1866,7 +1866,7 @@ function breathScreen(){
   const body = `<div class="q-breath">
     <span class="q-eyebrow">Pourquoi ces questions</span>
     <h2 class="q-statement"><span>Un défi en commun pour se comprendre.</span><span>Des expériences différentes pour s'aider.</span></h2>
-    <p class="q-hint">Tu viens de nous dire où tu en es. Les dernières questions portent sur ce que tu peux apporter et sur qui tu es en dehors du business. On compose chaque dîner de 4 avec ces repères.</p>
+    <p class="q-hint">Tu viens de nous dire où tu en es. Les dernières questions portent sur ce que tu peux apporter et sur qui tu es en dehors du business. On compose chaque dîner de 6 avec ces repères.</p>
     <ul class="q-crit">
       <li><b>Des situations proches</b><span>Pour se comprendre vite</span></li>
       <li><b>Un rythme compatible</b><span>Pour avancer ensemble après</span></li>
@@ -2040,7 +2040,7 @@ function insideScreen(){
   const body = `<div class="tl-inside">
       <h2 class="q-title">Ce qui t'attend le 5 décembre.</h2>
       <div class="perks perks-3">
-        <figure class="perk"><div class="perk-trio"><img src="img/x-pizza.jpg" alt=""><img src="img/x-gaufre.jpg" alt=""></div><figcaption><b style="--n:16">Dîner à 4</b></figcaption></figure>
+        <figure class="perk"><div class="perk-trio"><img src="img/x-pizza.jpg" alt=""><img src="img/x-gaufre.jpg" alt=""></div><figcaption><b style="--n:16">Dîner à 6</b></figcaption></figure>
         <figure class="perk"><div class="perk-trio iv-trio"><img src="img/iv-micka.jpg" alt=""><img src="img/iv-2.jpg" alt=""><img src="img/iv-3.jpg" alt=""></div><figcaption><b style="--n:16">Interventions des entrepreneurs AUDACE</b></figcaption></figure>
         ${card("n11.jpg", "Networking libre", "")}
       </div>
@@ -2049,7 +2049,7 @@ function insideScreen(){
 }
 /* Les doutes, partagés entre « On a tout compris » et la table */
 const DOUBTS = [
-    ["Je ne connais personne là-bas.", "C'est fait pour ça : tu dînes à 4 entrepreneurs choisis pour toi, donc tu n'es jamais seul. Et tes proches paient 15 € : ramène-les."],
+    ["Je ne connais personne là-bas.", "C'est fait pour ça : tu dînes à 6 entrepreneurs choisis pour toi, donc tu n'es jamais seul. Et tes proches paient 15 € : ramène-les."],
     ["Je ne suis pas assez avancé.", "Tu viens justement pour rencontrer des gens qui sont passés par là. Beaucoup d'élèves AUDACE ont commencé à 0. Ici, personne ne te juge sur ton chiffre."],
     ["Le prix, ça vaut le coup ?", "Dîner, interventions et networking compris, et 15 € pour chaque proche que tu ramènes. Une soirée entière avec des entrepreneurs qui visent haut."],
     ["Je ne sais pas si je serai dispo.", "C'est un samedi soir, le 5 décembre, à Paris. Une seule soirée, et elle peut tout changer."]
@@ -2111,13 +2111,15 @@ function readyScreen(){
   return shell("ready", body, "");
 }
 function dinerScreen(){
-  /* Ta table de 4, vue du dessus : toi + 3 places floutées, avec le profil cherché */
+  /* Ta table de 6, vue du dessus : toi + 5 places floutées */
   const SEEK = { createurs:"Créateur de contenu", service:"Freelance", agence:"Patron d'agence", ecom:"E-commerçant", etudiants:"Étudiant entrepreneur", coachs:"Coach ou formateur", associe:"Futur associé", pairs:"Entrepreneur à +20\u00a0000\u00a0€/mois" };
   const picks = (Array.isArray(S.answers.seek) ? S.answers.seek : [S.answers.seek]).filter(v => SEEK[v]).map(v => SEEK[v]);
   const tags = isElite()
     ? picks.filter(t => !/20\u00a0000/.test(t)).concat(["Futur associé", "Créateur de contenu"]).filter((t, i, arr) => arr.indexOf(t) === i).slice(0, 2).concat(["Entrepreneur à +20\u00a0000\u00a0€/mois"])
     : picks.concat(["Élève AUDACE", "Futur associé"]).filter((t, i, arr) => arr.indexOf(t) === i).slice(0, 2).concat([""]);
-  const seats = [["t-p2", tags[0]], ["t-p1", tags[2]], ["t-p4", tags[1]]];
+  const seats = [["t-p2"], ["t-p1"], ["t-p3"], ["t-p4"], ["age-30"]];
+  const ANG = [150, 210, 270, 330, 30];   // toi en bas (90°), les 5 autres tout autour
+  const pos = ang => `left:${(50 + 39 * Math.cos(ang * Math.PI / 180)).toFixed(1)}%;top:${(50 + 39 * Math.sin(ang * Math.PI / 180)).toFixed(1)}%`;
   const plate = ang => { const r = ang * Math.PI / 180, x = 100 + 43 * Math.cos(r), y = 100 + 43 * Math.sin(r), deg = ang + 90;
     return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${deg})"><circle r="13" fill="#EFE7D2"/><circle r="9.6" fill="#FBF8EE" stroke="rgba(60,40,20,.12)" stroke-width=".8"/><rect x="-18.5" y="-7" width="1.8" height="14" rx=".9" fill="#CFC6B2"/><rect x="16.7" y="-7" width="1.8" height="14" rx=".9" fill="#CFC6B2"/><circle cx="14" cy="-13" r="3.6" fill="rgba(255,255,255,.22)" stroke="rgba(255,255,255,.55)" stroke-width=".7"/></g>`; };
   const tableSvg = `<svg class="rt-svg" viewBox="0 0 200 200" aria-hidden="true"><defs>
@@ -2127,16 +2129,16 @@ function dinerScreen(){
       <circle cx="100" cy="108" r="64" fill="rgba(0,0,0,.55)" filter="url(#rtShadow)"/>
       <circle cx="100" cy="100" r="64" fill="url(#rtWood)" stroke="#2F1F11" stroke-width="2"/>
       <circle cx="100" cy="100" r="58" fill="none" stroke="rgba(255,235,200,.07)" stroke-width="1"/><circle cx="100" cy="100" r="47" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="1"/><circle cx="100" cy="100" r="33" fill="none" stroke="rgba(255,235,200,.05)" stroke-width="1"/>
-      ${[90, 180, 270, 0].map(plate).join("")}
+      ${[90, ...ANG].map(plate).join("")}
       <circle cx="100" cy="100" r="19.5" fill="#E9DFC8"/><image href="img/x-pizza.jpg" x="74" y="74" width="52" height="52" preserveAspectRatio="xMidYMid slice" clip-path="url(#rtPizza)"/>
     </svg>`;
   const body = `<div class="tl-ready tl-diner">
-      <h2 class="q-title">On t'a trouvé 3 entrepreneurs qui ont ta vibe 🔥</h2>
+      <h2 class="q-title">On t'a trouvé 5 entrepreneurs qui ont ta vibe 🔥</h2>
       <p class="tl-sub rt-sub">Vous dînerez ensemble le 5 décembre.</p>
       <div class="rt rt2" aria-hidden="true">
         ${tableSvg}
         <div class="rt-seat rt-me" style="--i:0"><span class="rt-av"><b>Toi</b></span></div>
-        ${seats.map(([img, t], i) => `<div class="rt-seat rt-s${i + 1}" style="--i:${i + 1}"><span class="rt-av"><img src="img/${img}.jpg" alt=""><i>?</i></span></div>`).join("")}
+        ${seats.map(([img], i) => `<div class="rt-seat rt-s${i + 1}" style="--i:${i + 1};${pos(ANG[i])}"><span class="rt-av"><img src="img/${img}.jpg" alt=""><i>?</i></span></div>`).join("")}
       </div>
     </div>`;
   return shell("diner", body, `<button class="q-btn" data-act="next">Continuer</button>`);
@@ -2213,7 +2215,7 @@ function dateScreen(){
       </div>
       <div class="dt-inc">
         <p class="dt-h">Au programme</p>
-        <ul>${["🍽️ Ton dîner de 4 sur mesure", "🎤 Les intervenants AUDACE", "🍕 Pizza et gaufre glacée offertes", "💬 Ta squad sur WhatsApp"].map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+        <ul>${["🍽️ Ton dîner de 6 sur mesure", "🎤 Les intervenants AUDACE", "🍕 Pizza et gaufre glacée offertes", "💬 Ta squad sur WhatsApp"].map(t => `<li>${esc(t)}</li>`).join("")}</ul>
       </div>
     </div>`;
   return shell("date", body, `<button class="q-btn" data-act="next">Continuer</button>`);
@@ -2229,7 +2231,7 @@ function payHref(){
   return (potes() ? tier().proches : tier().seul) + (q.length ? "?" + q.join("&") : "");
 }
 function ticketScreen(){
-  const VALUE = [["Un échange direct avec les intervenants AUDACE, à plus de 100\u00a0000\u00a0€ par mois", 500], ["Ton dîner de 4 composé pour toi, avec un coach AUDACE", 200], ["Le networking avec 200 entrepreneurs", 200], ["Ta soirée dans un lieu privé à Paris", 50], ["Pizza et gaufre glacée offertes", 20]];
+  const VALUE = [["Un échange direct avec les intervenants AUDACE, à plus de 100\u00a0000\u00a0€ par mois", 500], ["Ton dîner de 6 composé pour toi, avec un coach AUDACE", 200], ["Le networking avec 200 entrepreneurs", 200], ["Ta soirée dans un lieu privé à Paris", 50], ["Pizza et gaufre glacée offertes", 20]];
   const total = VALUE.reduce((s, v) => s + v[1], 0);
   const eur = n => n.toLocaleString("fr-FR").replace(/\s/g, "\u00a0") + "\u00a0€";
   const body = `<div class="tl-ticket tk-lp">
@@ -2240,7 +2242,7 @@ function ticketScreen(){
       </div>
       <div class="tk-card">
         <span class="tk-badge">${prix() === 30 ? "-50 % pour tes proches" : "Tes proches à 15 €"}</span>
-        <p class="tk-what">Dîner à 4 · Interventions · Networking</p>
+        <p class="tk-what">Dîner à 6 · Interventions · Networking</p>
         <div class="tk-pay-row"><span><b>Ta place</b>${tier().label ? `<small>${tier().label}</small>` : ""}</span><b class="tk-amt">${prix()} €</b></div>
         <div class="tk-pay-row tk-potes"><span><b>Tes proches</b><small>Parents, amis · ${prix() === 30 ? "<s>30 €</s> " : ""}15 €</small></span><span class="tk-step"><button data-act="pote" data-d="-1" aria-label="Un proche de moins">−</button><b class="tk-n">${potes()}</b><button data-act="pote" data-d="1" aria-label="Un proche de plus">+</button></span></div>
         <div class="tk-total"><span>Total</span><b class="tk-sum">${potesTotal()} €</b></div>
@@ -2300,9 +2302,9 @@ function ticketScreen(){
 ${S.answers.stage === "elite" ? `<details open><summary>C'est un networking pour débutants ?</summary><p>Non. Ta table réunit uniquement des entrepreneurs qui chiffrent comme toi.</p></details>` : S.answers.stage === "grow" ? `<details open><summary>Et si je fais déjà 5 000 €/mois ?</summary><p>Oui. Ta table chiffre comme toi, et tu apprends de ceux à +20 k€/mois.</p></details>` : ""}
           <details><summary>Qui peut venir ?</summary><p>Tous ceux qui veulent entreprendre : étudiants, salariés, débutants ou déjà lancés. Pas besoin d'être élève AUDACE.</p></details>
           <details><summary>Je peux venir avec mes parents ?</summary><p>Oui, et on te le conseille. Chaque proche que tu ramènes paie 15 €.</p></details>
-          <details><summary>Mes parents mangent aussi ?</summary><p>Oui, le dîner est compris pour eux aussi. Ils s'assoient à ta table : vous êtes 5 avec un parent, 6 avec les deux.</p></details>
+          <details><summary>Mes parents mangent aussi ?</summary><p>Oui, le dîner est compris pour eux aussi. Ils s'assoient à ta table, qui reste à 6 au total.</p></details>
           <details><summary>Où et à quelle heure ?</summary><p>À Paris, le samedi 5 décembre en soirée. L'adresse est envoyée par e-mail à tous les participants avant l'événement.</p></details>
-          <details><summary>Je ne connais personne, je viens seul ?</summary><p>Oui, c'est fait pour ça. Tu dînes à 4 avec des entrepreneurs choisis selon tes réponses, donc tu n'es jamais seul.</p></details>
+          <details><summary>Je ne connais personne, je viens seul ?</summary><p>Oui, c'est fait pour ça. Tu dînes à 6 avec des entrepreneurs choisis selon tes réponses, donc tu n'es jamais seul.</p></details>
           <details><summary>Je n'ai pas encore de business, je peux venir ?</summary><p>Oui. Beaucoup viennent justement pour trouver l'idée, l'envie ou les bonnes personnes pour se lancer.</p></details>
           <details><summary>Qu'est-ce qui est compris dans le prix ?</summary><p>Le dîner (pizza et gaufre glacée), les interventions des entrepreneurs AUDACE et le networking. Tu n'as rien d'autre à payer sur place.</p></details>
           <details><summary>Comment j'ajoute mes proches ?</summary><p>Sur ton billet, appuie sur + à côté de « Tes proches ». Chaque proche paie 15 €.</p></details>
@@ -2368,7 +2370,7 @@ function genialScreen(){
   const body = `<div class="tl-genial" data-act="next">
       <div class="gen-photo"><img src="img/q4.jpg" alt=""><span class="gen-check">${ICON.check}</span></div>
       <h2 class="q-title">Bienvenue chez AUDACE.</h2>
-      <p class="tl-sub">Le 5 décembre, tu ne viendras pas seul. Ton dîner à 4 entrepreneurs t'attend.</p>
+      <p class="tl-sub">Le 5 décembre, tu ne viendras pas seul. Ton dîner à 6 t'attend.</p>
     </div>`;
   return shell("genial", body, "");   // passe tout seul après 2,6 s (ou au toucher)
 }
