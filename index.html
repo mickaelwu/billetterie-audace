@@ -1703,7 +1703,7 @@ function go(i){
 }
 const redraw = () => { animate = false; showQuiz(); };
 const isElite = () => S.answers.stage === "elite";
-const skipFor = id => id === "cercle" && !isElite() && S.answers.stage !== "grow";   // l'écran « cercle » n'existe que pour ceux à +5 000 €/mois
+const skipFor = id => false;   // l'écran « cercle » existe pour tous les niveaux, avec un texte adapté
 const next = () => { let i = S.idx + 1; while (skipFor(FLOW[i])) i++; go(i); };
 const prev = () => { let i = S.idx - 1; while (["loading", "analyse", "genial", "mini"].includes(FLOW[i]) || skipFor(FLOW[i])) i--; go(i); };
 
@@ -2174,12 +2174,17 @@ function revealScreen(){
     </div>`;
   return shell("reveal", body, `<button class="q-btn" data-act="next">Continuer</button>`);
 }
-/* Chemin +20 000 €/mois : on ne leur vend pas de l'apprentissage, on leur vend leurs pairs.
-   Chemin 5 000 – 20 000 €/mois : on flatte aussi, mais il a encore beaucoup à apprendre pour scaler. */
+/* Deuxième écran après « Ton business » : qui sera là pour l'aider à débloquer son problème, selon son niveau */
 function cercleScreen(){
-  const grow = S.answers.stage === "grow";
-  const t = grow ? "Tu fais déjà partie des meilleurs." : "À ton niveau, tu ne viens pas pour apprendre les bases.";
-  const sub = grow ? "Pour scaler, apprends de Mickaël, ses intervenants et ceux à +20 k€/mois." : "Tu viens échanger avec ceux qui jouent dans ta ligue : Mickaël et les intervenants à +100 k€/mois.";
+  const C = {
+    explore:["Eux aussi sont partis de zéro.", "Le 5 décembre, Mickaël et ses intervenants t'aident à trouver ton idée."],
+    launch:["Eux aussi ont cherché leur premier client.", "Mickaël et ses intervenants t'aident à décrocher le tien."],
+    first:["Eux aussi ont gagné leurs premiers euros.", "Mickaël et ses intervenants t'aident à vendre chaque mois."],
+    mid:["Eux ont passé le cap des 5 000 €/mois.", "Le 5 décembre, Mickaël et ses intervenants te montrent comment."],
+    grow:["Tu fais déjà partie des meilleurs.", "Pour scaler, apprends de Mickaël, ses intervenants et ceux à +20 k€/mois."],
+    elite:["À ton niveau, tu ne viens pas pour apprendre les bases.", "Tu viens échanger avec ceux qui jouent dans ta ligue : Mickaël et les intervenants à +100 k€/mois."]
+  };
+  const [t, sub] = C[S.answers.stage] || C.launch;
   const body = `<div class="tl-prof">
       <div class="prof-oval"><img src="img/x-intervenants.jpg" alt="Les intervenants AUDACE"></div>
       <h2 class="q-title">${t}</h2>
