@@ -971,7 +971,7 @@ li.ok .ld2 path { transition: stroke-dashoffset .3s .6s cubic-bezier(.65,0,.35,1
 .yt-card figcaption a { font-size: 14px; font-weight: 700; color: var(--fg); opacity: .75; text-decoration: underline; text-underline-offset: 3px; align-self: flex-start; margin-top: 2px; }
 .lp-end { margin: 30px 0 0; text-align: center; font-family: var(--display); font-size: 22px; color: var(--fg); }
 .tk-potes s { opacity: .7; margin: 0 2px; }
-.tk-potes small { white-space: nowrap; }
+.tk-potes small, .tk-pay-row small { white-space: nowrap; }
 .tk-pay-row > .tk-step { flex: none; display: flex; flex-direction: row; align-items: center; gap: 10px; }
 .tk-step button { width: 36px; height: 36px; border-radius: 50%; border: 0; background: #18231C; color: #FAF8E4; font: inherit; font-size: 22px; font-weight: 700; cursor: pointer; display: grid; place-items: center; line-height: 1; }
 .tk-step .tk-n { font-size: 22px !important; min-width: 18px; text-align: center; }
@@ -1361,6 +1361,10 @@ function toTop(){ window.scrollTo(0, 0); if ($frame) $frame.scrollTop = 0; }
 
 const STRIPE ="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z";
 const STRIPE_PROCHES ="https://buy.stripe.com/14AaEY8P1eQZ52T2r1gbm1y";   // 30 € + 15 € par proche (1 à 4, modifiable sur Stripe)
+/* Prix selon le niveau : 30 € (moins de 5 000 €/mois), 80 € (5 000 – 20 000 €/mois), 200 € (20 000 €/mois et +). Les proches restent à 15 €. */
+const TIERS = { base:{ prix:30, seul:"https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z", proches:"https://buy.stripe.com/14AaEY8P1eQZ52T2r1gbm1y" }, grow:{ prix:80, label:"Entrepreneur +5 000 €/mois", seul:"https://buy.stripe.com/fZu14o9T57oxdzp8Ppgbm1A", proches:"https://buy.stripe.com/eVq5kE0iveQZgLBe9Jgbm1B" }, elite:{ prix:200, label:"Entrepreneur +20 000 €/mois", seul:"https://buy.stripe.com/7sY5kE9T51092UL5Ddgbm1C", proches:"https://buy.stripe.com/eVqeVe4yLcIReDt3v5gbm1D" } };
+const tier = () => TIERS[S.answers.stage === "elite" ? "elite" : S.answers.stage === "grow" ? "grow" : "base"];
+const prix = () => tier().prix;
 
 /* Photos AUDACE (workshops et communauté) */
 const TICKER = [
@@ -1950,7 +1954,7 @@ function scienceScreen(){
         <div class="sci3-y">Tes revenus</div>
         ${svg}
         <div class="sci3-x">Le niveau de ton entourage</div>
-        <p class="sci3-txt">Les jeunes entourés d'amis plus aisés gagnent 20 % de plus une fois adultes.</p>
+        <p class="sci3-txt">Avec des amis plus aisés, tu gagnes 20 % de plus.</p>
         <p class="sci3-src">Étude de Harvard sur 21 milliards d'amitiés (Nature, 2022). <a class="sci-link" href="https://doi.org/10.1038/s41586-022-04996-4" target="_blank" rel="noopener">Lire l'étude</a></p>
       </div>
     </div>`;
@@ -2045,13 +2049,13 @@ function insideScreen(){
 }
 /* Les doutes, partagés entre « On a tout compris » et la table */
 const DOUBTS = [
-    ["Je ne connais personne là-bas.", "C'est fait pour ça : tu dînes à 4 entrepreneurs choisis pour toi, donc tu n'es jamais seul. Et tes proches ont -50 % : ramène-les."],
+    ["Je ne connais personne là-bas.", "C'est fait pour ça : tu dînes à 4 entrepreneurs choisis pour toi, donc tu n'es jamais seul. Et tes proches paient 15 € : ramène-les."],
     ["Je ne suis pas assez avancé.", "Tu viens justement pour rencontrer des gens qui sont passés par là. Beaucoup d'élèves AUDACE ont commencé à 0. Ici, personne ne te juge sur ton chiffre."],
-    ["30 €, ça vaut le coup ?", "30 € la soirée, et 15 € pour chaque proche que tu ramènes. Dîner, networking et interventions compris, avec des entrepreneurs qui visent haut."],
-    ["Je ne sais pas si je serai dispo.", "C'est un samedi soir, le 5 décembre, à Paris. Une seule soirée, et tu repars avec ta squad."]
+    ["Le prix, ça vaut le coup ?", "Dîner, interventions et networking compris, et 15 € pour chaque proche que tu ramènes. Une soirée entière avec des entrepreneurs qui visent haut."],
+    ["Je ne sais pas si je serai dispo.", "C'est un samedi soir, le 5 décembre, à Paris. Une seule soirée, et elle peut tout changer."]
   ];
 const doubtsFor = () => isElite()
-  ? DOUBTS.map(d => /pas assez avancé/.test(d[0]) ? ["Je vais tomber sur des débutants ?", "Non. On te place avec des entrepreneurs de ton niveau, et Mickaël Wu et les intervenants AUDACE sont là toute la soirée."] : d)
+  ? DOUBTS.map(d => /pas assez avancé/.test(d[0]) ? ["Je vais tomber sur des débutants ?", "Non. On te place avec des entrepreneurs de ton niveau, et Mickaël et les intervenants à +100 k€/mois sont là toute la soirée."] : d)
   : DOUBTS;
 /* Comme Timeleft : juste après les messages WhatsApp, avant de composer sa table */
 function comprisScreen(){
@@ -2171,7 +2175,7 @@ function cercleScreen(){
   const body = `<div class="tl-prof">
       <div class="prof-oval"><img src="img/x-intervenants.jpg" alt="Les intervenants AUDACE"></div>
       <h2 class="q-title">À ton niveau, tu ne viens pas pour apprendre les bases.</h2>
-      <p class="tl-sub">Tu viens échanger avec ceux qui jouent dans ta ligue : Mickaël Wu et les intervenants AUDACE.</p>
+      <p class="tl-sub">Tu viens échanger avec ceux qui jouent dans ta ligue : Mickaël et les intervenants à +100 k€/mois.</p>
     </div>`;
   return shell("cercle", body, `<button class="q-btn" data-act="next">Continuer</button>`);
 }
@@ -2218,7 +2222,7 @@ function payHref(){
   const q = [];
   if (complete()) q.push("client_reference_id=" + encodeURIComponent(code.slice(0, 200)));
   if (emailOk()) q.push("prefilled_email=" + encodeURIComponent(S.answers.email.trim()));
-  return (potes() ? STRIPE_PROCHES : STRIPE) + (q.length ? "?" + q.join("&") : "");
+  return (potes() ? tier().proches : tier().seul) + (q.length ? "?" + q.join("&") : "");
 }
 function ticketScreen(){
   const VALUE = [["Un échange direct avec les intervenants AUDACE, à plus de 100\u00a0000\u00a0€ par mois", 500], ["Ton dîner de 4 composé pour toi, avec un coach AUDACE", 200], ["Le networking avec 200 entrepreneurs", 200], ["Ta soirée dans un lieu privé à Paris", 50], ["Pizza et gaufre glacée offertes", 20]];
@@ -2231,10 +2235,10 @@ function ticketScreen(){
         <span class="dt-txt"><b>Samedi 5 décembre</b><span>Paris · En soirée</span></span>
       </div>
       <div class="tk-card">
-        <span class="tk-badge">-50 % pour tes proches</span>
+        <span class="tk-badge">${prix() === 30 ? "-50 % pour tes proches" : "Tes proches à 15 €"}</span>
         <p class="tk-what">Dîner à 4 · Interventions · Networking</p>
-        <div class="tk-pay-row"><span><b>Ta place</b></span><b class="tk-amt">30 €</b></div>
-        <div class="tk-pay-row tk-potes"><span><b>Tes proches</b><small>Parents, amis · <s>30 €</s> 15 €</small></span><span class="tk-step"><button data-act="pote" data-d="-1" aria-label="Un proche de moins">−</button><b class="tk-n">${potes()}</b><button data-act="pote" data-d="1" aria-label="Un proche de plus">+</button></span></div>
+        <div class="tk-pay-row"><span><b>Ta place</b>${tier().label ? `<small>${tier().label}</small>` : ""}</span><b class="tk-amt">${prix()} €</b></div>
+        <div class="tk-pay-row tk-potes"><span><b>Tes proches</b><small>Parents, amis · ${prix() === 30 ? "<s>30 €</s> " : ""}15 €</small></span><span class="tk-step"><button data-act="pote" data-d="-1" aria-label="Un proche de moins">−</button><b class="tk-n">${potes()}</b><button data-act="pote" data-d="1" aria-label="Un proche de plus">+</button></span></div>
         <div class="tk-total"><span>Total</span><b class="tk-sum">${potesTotal()} €</b></div>
       </div>
       <p class="ld-note">Paiement sécurisé par Stripe. Tu reçois ta place par e-mail.</p>
@@ -2253,7 +2257,7 @@ function ticketScreen(){
         <h3 class="lp-h">Viens avec tes parents 👨‍👩‍👦</h3>
         <p>Tes parents sont peut-être un peu sceptiques. C'est normal : ils ne connaissent pas encore ce monde-là.</p>
         <p>Le 5 décembre, ils rencontrent des jeunes qui pensent comme toi, mais aussi des gens de leur âge, qui ont déjà réussi. Ils découvrent l'IA de pointe et le marketing de demain, un monde qu'ils ne connaissent pas forcément.</p>
-        <p class="lp-pill">Leur place : 15 € au lieu de 30 €</p>
+        <p class="lp-pill">${prix() === 30 ? "Leur place : 15 € au lieu de 30 €" : "Leur place : 15 €"}</p>
         <div class="yt-frame lp-ytp"><a class="yt-thumb" href="https://youtu.be/HAjJmkcH0M0" target="_blank" rel="noopener" aria-label="Vidéo pour les parents sur YouTube"><img src="https://i.ytimg.com/vi/HAjJmkcH0M0/hqdefault.jpg" alt="" loading="lazy"><span class="yt-btn"><svg viewBox="0 0 68 48"><path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C55.2.3 34 .3 34 .3s-21.2 0-26.5 1.4a8.5 8.5 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.5 8.5 0 0 0 6 6C12.8 47.7 34 47.7 34 47.7s21.2 0 26.5-1.4a8.5 8.5 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3z" fill="#f00"/><path d="M45 24 27 14v20z" fill="#fff"/></svg></span></a></div>
       </section>
 
@@ -2290,13 +2294,13 @@ function ticketScreen(){
         <h3 class="lp-h">Questions fréquentes</h3>
         <div class="lp-faq">
           <details><summary>Qui peut venir ?</summary><p>Tous ceux qui veulent entreprendre : étudiants, salariés, débutants ou déjà lancés. Pas besoin d'être élève AUDACE.</p></details>
-          <details><summary>Je peux venir avec mes parents ?</summary><p>Oui, et on te le conseille. Chaque proche que tu ramènes paie 15 € au lieu de 30 €.</p></details>
+          <details><summary>Je peux venir avec mes parents ?</summary><p>Oui, et on te le conseille. Chaque proche que tu ramènes paie 15 €.</p></details>
           <details><summary>Mes parents mangent aussi ?</summary><p>Oui, le dîner est compris pour eux aussi. Ils s'assoient à ta table : vous êtes 5 avec un parent, 6 avec les deux.</p></details>
           <details><summary>Où et à quelle heure ?</summary><p>À Paris, le samedi 5 décembre en soirée. L'adresse est envoyée par e-mail à tous les participants avant l'événement.</p></details>
           <details><summary>Je ne connais personne, je viens seul ?</summary><p>Oui, c'est fait pour ça. Tu dînes à 4 avec des entrepreneurs choisis selon tes réponses, donc tu n'es jamais seul.</p></details>
           <details><summary>Je n'ai pas encore de business, je peux venir ?</summary><p>Oui. Beaucoup viennent justement pour trouver l'idée, l'envie ou les bonnes personnes pour se lancer.</p></details>
           <details><summary>Qu'est-ce qui est compris dans le prix ?</summary><p>Le dîner (pizza et gaufre glacée), les interventions des entrepreneurs AUDACE et le networking. Tu n'as rien d'autre à payer sur place.</p></details>
-          <details><summary>Comment j'ajoute mes proches ?</summary><p>Sur ton billet, appuie sur + à côté de « Tes proches ». Chaque proche paie 15 € au lieu de 30 €.</p></details>
+          <details><summary>Comment j'ajoute mes proches ?</summary><p>Sur ton billet, appuie sur + à côté de « Tes proches ». Chaque proche paie 15 €.</p></details>
           <details><summary>Je reçois quoi après le paiement ?</summary><p>Un e-mail de confirmation tout de suite. Puis, avant la soirée, l'e-mail avec les informations de la soirée, comme l'adresse.</p></details>
           <details><summary>Je peux me faire rembourser ?</summary><p>Si tu ne peux plus venir, écris à @mickawu sur Instagram : on t'aide à donner ta place à quelqu'un.</p></details>
         </div>
@@ -2327,8 +2331,8 @@ function ytPlay(b){
 }
 window.ytPlay = ytPlay;
 function potes(){ return Math.max(0, Math.min(4, +S.answers.potes || 0)); }
-function potesTotal(){ return 30 + potes() * 15; }
-function potesLabel(){ return potes() ? `Réserver pour ${potes() + 1} · ${potesTotal()} €` : "Réserver ma place · 30 €"; }
+function potesTotal(){ return prix() + potes() * 15; }
+function potesLabel(){ return potes() ? `Réserver pour ${potes() + 1} · ${potesTotal()} €` : `Réserver ma place · ${prix()} €`; }
 function setPotes(d){
   S.answers.potes = Math.max(0, Math.min(4, potes() + d)); save();
   const q = sel => document.querySelector(sel);
