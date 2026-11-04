@@ -1701,7 +1701,7 @@ function go(i){
 }
 const redraw = () => { animate = false; showQuiz(); };
 const isElite = () => S.answers.stage === "elite";
-const skipFor = id => id === "cercle" && !isElite();   // l'écran « cercle » n'existe que pour ceux à +20 000 €/mois
+const skipFor = id => id === "cercle" && !isElite() && S.answers.stage !== "grow";   // l'écran « cercle » n'existe que pour ceux à +5 000 €/mois
 const next = () => { let i = S.idx + 1; while (skipFor(FLOW[i])) i++; go(i); };
 const prev = () => { let i = S.idx - 1; while (["loading", "analyse", "genial", "mini"].includes(FLOW[i]) || skipFor(FLOW[i])) i--; go(i); };
 
@@ -2170,12 +2170,16 @@ function revealScreen(){
     </div>`;
   return shell("reveal", body, `<button class="q-btn" data-act="next">Continuer</button>`);
 }
-/* Chemin +20 000 €/mois : on ne leur vend pas de l'apprentissage, on leur vend leurs pairs */
+/* Chemin +20 000 €/mois : on ne leur vend pas de l'apprentissage, on leur vend leurs pairs.
+   Chemin 5 000 – 20 000 €/mois : on flatte aussi, mais il a encore beaucoup à apprendre pour scaler. */
 function cercleScreen(){
+  const grow = S.answers.stage === "grow";
+  const t = grow ? "Tu fais déjà partie des meilleurs." : "À ton niveau, tu ne viens pas pour apprendre les bases.";
+  const sub = grow ? "Pour scaler, apprends de Mickaël, ses intervenants et ceux à +20 k€/mois." : "Tu viens échanger avec ceux qui jouent dans ta ligue : Mickaël et les intervenants à +100 k€/mois.";
   const body = `<div class="tl-prof">
       <div class="prof-oval"><img src="img/x-intervenants.jpg" alt="Les intervenants AUDACE"></div>
-      <h2 class="q-title">À ton niveau, tu ne viens pas pour apprendre les bases.</h2>
-      <p class="tl-sub">Tu viens échanger avec ceux qui jouent dans ta ligue : Mickaël et les intervenants à +100 k€/mois.</p>
+      <h2 class="q-title">${t}</h2>
+      <p class="tl-sub">${sub}</p>
     </div>`;
   return shell("cercle", body, `<button class="q-btn" data-act="next">Continuer</button>`);
 }
@@ -2293,6 +2297,7 @@ function ticketScreen(){
       <section class="lp-sec">
         <h3 class="lp-h">Questions fréquentes</h3>
         <div class="lp-faq">
+${S.answers.stage === "elite" ? `<details open><summary>C'est un networking pour débutants ?</summary><p>Non. Ta table réunit uniquement des entrepreneurs qui chiffrent comme toi.</p></details>` : S.answers.stage === "grow" ? `<details open><summary>Et si je fais déjà 5 000 €/mois ?</summary><p>Oui. Ta table chiffre comme toi, et tu apprends de ceux à +20 k€/mois.</p></details>` : ""}
           <details><summary>Qui peut venir ?</summary><p>Tous ceux qui veulent entreprendre : étudiants, salariés, débutants ou déjà lancés. Pas besoin d'être élève AUDACE.</p></details>
           <details><summary>Je peux venir avec mes parents ?</summary><p>Oui, et on te le conseille. Chaque proche que tu ramènes paie 15 €.</p></details>
           <details><summary>Mes parents mangent aussi ?</summary><p>Oui, le dîner est compris pour eux aussi. Ils s'assoient à ta table : vous êtes 5 avec un parent, 6 avec les deux.</p></details>
