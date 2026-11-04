@@ -1430,7 +1430,7 @@ function fillMarquee(){
 /* ---------------------------------------------------------------
    Les réponses partent avec le paiement, dans le champ Stripe
    « client_reference_id ». Format : XP_A2-S1-P3-D2-O1-B2-R3-G15-H2-Y1-I357
-   Chaque lettre = une question, chaque chiffre = la réponse (1 = la première).
+   Chaque lettre = une question, chaque caractère = la réponse (1 = la première, a = la 10e, b = la 11e…).
    A âge · S situation · P étape · D domaine · O objectif · B blocage · R rythme
    G peut aider sur · H veut repartir avec · Y en groupe · I centres d'intérêt
    C veut rencontrer
@@ -1750,7 +1750,7 @@ function startLoading(){
 function answerCode(){
   const parts = QIDS.filter(id => Q[id].type !== "text").map(id => {
     const q = Q[id], options = val(q.options), a = S.answers[id];
-    const idx = v => options.findIndex(o => o.v === v) + 1;
+    const idx = v => (options.findIndex(o => o.v === v) + 1).toString(36);   // 1…9 puis a, b, c… (10, 11, 12…) : un seul caractère par réponse
     const digits = Array.isArray(a) ? a.map(idx).sort().join("") : String(idx(a));
     return q.code + digits;
   });
