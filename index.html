@@ -2689,7 +2689,7 @@ const BURST_SEQ = ["e-cour", "r1", "p1", "e-tiktok", "ws-groupe", "p3", "m-parc"
 const CROPS = {"e-table": {"x": 53.4, "y": 50.5, "z": 1}, "m-conference": {"x": 62.6, "y": 45.4, "z": 1}, "n02": {"x": 4.5, "y": 43.2, "z": 1}, "n04": {"x": 0, "y": 46.8, "z": 1}, "n06": {"x": 12.8, "y": 42.4, "z": 1}, "p2": {"x": 9.5, "y": 55.2, "z": 1}, "p3": {"x": 40.2, "y": 48.9, "z": 1}, "q1": {"x": 76.3, "y": 48.2, "z": 1}, "q3": {"x": 100, "y": 36.1, "z": 1}, "q4": {"x": 37.9, "y": 50, "z": 1}, "r2": {"x": 100, "y": 46.8, "z": 1.1}, "vision": {"x": 0, "y": 50.4, "z": 1}, "ws-classe": {"x": 100, "y": 55.5, "z": 1}, "ws-coach": {"x": 53.5, "y": 47.1, "z": 1}, "ws-groupe": {"x": 86.7, "y": 43.7, "z": 1}};
 const cropStyle = n => { const c = CROPS[n]; return c ? ` style="object-position:${c.x}% ${c.y}%;transform-origin:${c.x}% ${c.y}%;transform:scale(${c.z})"` : ""; };
 const NOT_LINES = [
-  [32.0, "une conférence"], [33.25, "un networking normal"], [34.5, "une soirée de plus"], [35.5, "un afterwork entre inconnus"],
+  [32.0, "une conférence"], [33.25, "un networking normal"], [34.5, "une soirée de plus"], [35.5, "une formation en ligne bidon"],
   [36.5, "de la motiv' Insta"], [37.25, "une formation déguisée"], [37.75, "un séminaire chiant"]
 ];
 function cineTimeline(){
