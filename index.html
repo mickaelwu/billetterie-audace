@@ -936,6 +936,12 @@ li.ok .ld2 path { transition: stroke-dashoffset .3s .6s cubic-bezier(.65,0,.35,1
 .lp-check li strong { font-size: 16.5px; color: var(--fg); }
 .lp-parents { padding: 20px 18px; border-radius: 22px; background: var(--card); }
 .lp-ytp { margin-top: 6px; }
+/* Vidéo parents hébergée sur le site (HLS 1080p, pas YouTube) */
+.lp-vid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #0d0f0e; }
+.yt-frame.lp-vid .vid-play { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; border-radius: 0; border: 0; padding: 0; background: rgba(0,0,0,.18); cursor: pointer; display: grid; place-items: center; }
+.yt-frame.lp-vid .vid-play span { width: 72px; height: 72px; border-radius: 50%; background: #FAF8E4; box-shadow: 0 8px 24px rgba(0,0,0,.4); display: grid; place-items: center; }
+.yt-frame.lp-vid .vid-play span::after { content: ""; margin-left: 6px; border-style: solid; border-width: 13px 0 13px 21px; border-color: transparent transparent transparent #18231C; }
+.lp-vid.on .vid-play { display: none; }
 .lp-vidw { position: relative; margin-top: 6px; border-radius: 18px; overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
 .lp-vid { width: 100%; height: 100%; display: block; object-fit: contain; }
 .lp-play { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border: 0; border-radius: 50%; background: rgba(255,255,255,.92); color: #131517; display: grid; place-items: center; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
@@ -2176,17 +2182,18 @@ function revealScreen(){
 }
 /* Deuxième écran après « Ton business » : qui sera là pour l'aider à débloquer son problème, selon son niveau */
 function cercleScreen(){
+  const ELEVES = "Mickaël, ses intervenants et les élèves AUDACE à +5 000 €/mois t'aident.";
   const C = {
-    explore:["Eux aussi sont partis de zéro.", "Le 5 décembre, Mickaël et ses intervenants t'aident à trouver ton idée."],
-    launch:["Eux aussi ont cherché leur premier client.", "Mickaël et ses intervenants t'aident à décrocher le tien."],
-    first:["Eux aussi ont gagné leurs premiers euros.", "Mickaël et ses intervenants t'aident à vendre chaque mois."],
-    mid:["Eux ont passé le cap des 5 000 €/mois.", "Le 5 décembre, Mickaël et ses intervenants te montrent comment."],
+    explore:["Eux aussi sont partis de zéro.", ELEVES],
+    launch:["Eux aussi ont cherché leur premier client.", ELEVES],
+    first:["Eux aussi ont gagné leurs premiers euros.", ELEVES],
+    mid:["Eux ont passé le cap des 5 000 €/mois.", ELEVES],
     grow:["Tu fais déjà partie des meilleurs.", "Pour scaler, apprends de Mickaël, ses intervenants et ceux à +20 k€/mois."],
     elite:["À ton niveau, tu ne viens pas pour apprendre les bases.", "Tu viens échanger avec ceux qui jouent dans ta ligue : Mickaël et les intervenants à +100 k€/mois."]
   };
   const [t, sub] = C[S.answers.stage] || C.launch;
   const body = `<div class="tl-prof">
-      <div class="prof-oval"><img src="img/x-intervenants.jpg" alt="Les intervenants AUDACE"></div>
+      <div class="prof-oval">${/^(grow|elite)$/.test(S.answers.stage) ? `<img src="img/x-intervenants.jpg" alt="Les intervenants AUDACE">` : `<img src="img/n11.jpg" alt="Les élèves AUDACE en t-shirt AUDACE">`}</div>
       <h2 class="q-title">${t}</h2>
       <p class="tl-sub">${sub}</p>
     </div>`;
@@ -2271,7 +2278,7 @@ function ticketScreen(){
         <p>Tes parents sont peut-être un peu sceptiques. C'est normal : ils ne connaissent pas encore ce monde-là.</p>
         <p>Le 5 décembre, ils rencontrent des jeunes qui pensent comme toi, mais aussi des gens de leur âge, qui ont déjà réussi. Ils découvrent l'IA de pointe et le marketing de demain, un monde qu'ils ne connaissent pas forcément.</p>
         <p class="lp-pill">${prix() === 30 ? "Leur place : 15 € au lieu de 30 €" : "Leur place : 15 €"}</p>
-        <div class="yt-frame lp-ytp"><a class="yt-thumb" href="https://youtu.be/HAjJmkcH0M0" target="_blank" rel="noopener" aria-label="Vidéo pour les parents sur YouTube"><img src="https://i.ytimg.com/vi/HAjJmkcH0M0/hqdefault.jpg" alt="" loading="lazy"><span class="yt-btn"><svg viewBox="0 0 68 48"><path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C55.2.3 34 .3 34 .3s-21.2 0-26.5 1.4a8.5 8.5 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.5 8.5 0 0 0 6 6C12.8 47.7 34 47.7 34 47.7s21.2 0 26.5-1.4a8.5 8.5 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3z" fill="#f00"/><path d="M45 24 27 14v20z" fill="#fff"/></svg></span></a></div>
+        <div class="yt-frame lp-ytp lp-vid"><video id="parentsVid" playsinline preload="none" poster="img/v-parents3.jpg" data-hls="vid/parents/parents.m3u8"></video><button type="button" class="vid-play" data-act="playParents" aria-label="Lancer la vidéo pour les parents"><span></span></button></div>
       </section>
 
       <section class="lp-sec">
@@ -2320,6 +2327,11 @@ ${S.answers.stage === "elite" ? `<details open><summary>C'est un networking pour
       </section>
 
       <div class="lp-cta-wrap"><a class="q-btn lp-cta" data-pay href="${payHref()}" target="_blank" rel="noopener"><span class="tk-btn-t">${potesLabel()}</span></a></div>
+
+      <section class="lp-sec">
+        <h3 class="lp-h">Qui vas-tu rencontrer à l'AUDACE Experience ?</h3>
+        <div class="yt-frame lp-vid"><video playsinline preload="none" poster="img/v-rencontre.jpg" data-hls="vid/rencontre/rencontre.m3u8"></video><button type="button" class="vid-play" data-act="playParents" aria-label="Lancer la vidéo : les personnes que tu vas rencontrer"><span></span></button></div>
+      </section>
 
       <section class="lp-sec">
         <h3 class="lp-h">Ils sont passés par AUDACE</h3>
@@ -2997,6 +3009,21 @@ document.addEventListener("input", ev => {
 document.addEventListener("change", ev => {
   if (ev.target.id === "leadCc"){ S.answers.cc = ev.target.value; save(); const b = document.getElementById("leadBtn"); if (b) b.disabled = !leadOk(); }
 });
+/* Lance la vidéo parents : HLS natif (iPhone, Safari) sinon hls.js (Android, Chrome) */
+function playParents(btn){
+  const box = btn.closest(".lp-vid"), v = box && box.querySelector("video");
+  if (!v) return;
+  box.classList.add("on"); v.controls = true;
+  const src = v.dataset.hls;
+  const go = () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  if (v.dataset.ready) return go();
+  v.dataset.ready = "1";
+  if (v.canPlayType("application/vnd.apple.mpegurl")) { v.src = src; go(); return; }
+  const start = () => { if (window.Hls && Hls.isSupported()) { const h = new Hls({ startLevel: -1 }); h.loadSource(src); h.attachMedia(v); h.on(Hls.Events.MANIFEST_PARSED, go); } else { v.src = src; go(); } };
+  if (window.Hls) return start();
+  const sc = document.createElement("script"); sc.src = "https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"; sc.onload = start; sc.onerror = start; document.head.appendChild(sc);
+}
+document.addEventListener("click", ev => { const b = ev.target.closest && ev.target.closest('[data-act="playParents"]'); if (b) { ev.preventDefault(); ev.stopPropagation(); playParents(b); } }, true);
 document.addEventListener("click", ev => {
   const t = ev.target.closest("[data-act]");
   if (!t) return;
