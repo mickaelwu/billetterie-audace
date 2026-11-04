@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ta place est réservée · AUDACE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+:root{--bg:#18231C;--card:#223026;--card-2:#2D3D31;--fg:#FAF8E4;--fg-2:#E4E3CC;--fg-3:#A9AD96;--ink:#18231C;--paper:#F2EBD6;
+--display:"Crimson Pro",Georgia,serif;--body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased}
+main{max-width:460px;margin:0 auto;padding:calc(36px + env(safe-area-inset-top,0px)) 16px 48px;display:flex;flex-direction:column;gap:22px}
+.check{width:64px;height:64px;border-radius:50%;background:var(--paper);color:var(--ink);display:grid;place-items:center;font-size:34px;font-weight:700;animation:pop .5s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+h1{margin:0;font-family:var(--display);font-weight:700;font-size:44px;line-height:1;text-wrap:balance}
+.sub{margin:0;color:var(--fg-2);font-size:18px;text-wrap:balance}
+.card{background:var(--card);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:14px;align-items:flex-start}
+.ico{flex:none;width:40px;height:40px;border-radius:12px;background:var(--card-2);display:grid;place-items:center;font-size:20px}
+.row b{display:block;font-weight:700;font-size:17px}
+.row span{color:var(--fg-3);font-size:15px}
+.row a{color:var(--fg);font-weight:500}
+.photo{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:20px;display:block}
+h2{margin:6px 0 0;font-family:var(--display);font-weight:700;font-size:28px;line-height:1.1}
+ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;counter-reset:s}
+ol li{counter-increment:s;display:flex;gap:12px;align-items:center;font-size:16px}
+ol li::before{content:counter(s);flex:none;width:30px;height:30px;border-radius:50%;background:var(--paper);color:var(--ink);font-weight:700;display:grid;place-items:center;font-size:15px}
+.btn{display:block;text-align:center;background:var(--paper);color:var(--ink);text-decoration:none;font-weight:700;padding:17px;border-radius:999px;font-size:17px}
+.btn.ghost{background:var(--card);color:var(--fg)}
+.end{text-align:center;color:var(--fg-3);font-size:15px;margin:4px 0 0}
+</style>
+</head>
+<body>
+<main>
+  <div class="check">✓</div>
+  <h1>Ta place est réservée 🔥</h1>
+  <p class="sub">Tu vas recevoir ton reçu par e-mail.<br>On a hâte de te voir.</p>
+
+  <div class="card">
+    <div class="row"><div class="ico">🎟️</div><div><b id="ev-date">Samedi 5 décembre</b><span>Paris</span></div></div>
+    <div class="row"><div class="ico">📍</div><div id="ev-lieu"><b>Adresse</b><span>Envoyée par e-mail avant la soirée.</span></div></div>
+    <div class="row"><div class="ico">🍕</div><div><b>Le dîner</b><span id="ev-infos">Pizza et gaufre glacée à ta table.</span></div></div>
+  </div>
+
+  <img class="photo" src="img/n11.jpg" alt="La soirée AUDACE">
+
+  <h2>Et maintenant ?</h2>
+  <ol>
+    <li>On te trouve tes 3 entrepreneurs.</li>
+    <li>Tu reçois l'adresse par e-mail.</li>
+    <li>Tu viens le 5 décembre. C'est tout.</li>
+  </ol>
+
+  <a class="btn" href="https://www.instagram.com/mickawu/" target="_blank" rel="noopener">Une question ? @mickawu</a>
+  <p class="end">À très vite.<br>Micka</p>
+</main>
+<script>
+fetch("event.json?t=" + Date.now()).then(r => r.json()).then(ev => {
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  if (ev.date) document.getElementById("ev-date").textContent = ev.date;
+  if (ev.infos) document.getElementById("ev-infos").textContent = ev.infos;
+  if (ev.adresse) {
+    const maps = ev.lien_maps || "https://maps.google.com/?q=" + encodeURIComponent(ev.adresse);
+    document.getElementById("ev-lieu").innerHTML = `<b>${esc(ev.adresse)}</b><span><a href="${esc(maps)}" target="_blank" rel="noopener">Ouvrir dans Maps</a></span>`;
+  }
+}).catch(() => {});
+</script>
+</body>
+</html>
