@@ -30,6 +30,12 @@ ol li{counter-increment:s;display:flex;gap:12px;align-items:center;font-size:16p
 ol li::before{content:counter(s);flex:none;width:30px;height:30px;border-radius:50%;background:var(--paper);color:var(--ink);font-weight:700;display:grid;place-items:center;font-size:15px}
 .btn{display:block;text-align:center;background:var(--paper);color:var(--ink);text-decoration:none;font-weight:700;padding:17px;border-radius:999px;font-size:17px}
 .btn.ghost{background:var(--card);color:var(--fg)}
+.wa-note{margin:0;line-height:1.5;text-align:center;color:var(--fg-3);font-size:14px}
+.rule{background:var(--card);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.rule h3{margin:0;font-family:var(--display);font-weight:700;font-size:26px;line-height:1.1}
+.rule .q{margin:0 0 -6px;color:var(--fg-2);font-size:16px;font-weight:500}
+.rule .big{margin:0;font-size:20px;font-weight:700;line-height:1.3;text-wrap:balance}
+.rule .note{margin:0;font-size:15px;font-weight:700;text-wrap:balance}
 .end{text-align:center;color:var(--fg-3);font-size:15px;margin:4px 0 0}
 </style>
 </head>
@@ -45,16 +51,29 @@ ol li::before{content:counter(s);flex:none;width:30px;height:30px;border-radius:
     <div class="row"><div class="ico">🍕</div><div><b>Le dîner</b><span id="ev-infos">Pizza et gaufre glacée à ta table.</span></div></div>
   </div>
 
+  <p class="wa-note">📩 Ton lien Discord perso arrive par e-mail.<br>Pense à regarder tes spams.</p>
+
   <img class="photo" src="img/n11.jpg" alt="La soirée AUDACE">
 
   <h2>Et maintenant ?</h2>
   <ol>
+    <li>Rejoins le Discord avec le lien reçu par e-mail.</li>
     <li>On te trouve tes 5 entrepreneurs.</li>
-    <li>Tu reçois l'adresse par e-mail.</li>
     <li>Tu viens le 5 décembre. C'est tout.</li>
   </ol>
 
-  <a class="btn" href="https://www.instagram.com/mickawu/" target="_blank" rel="noopener">Une question ? @mickawu</a>
+  <div class="rule">
+    <h3>La règle AUDACE 🎥</h3>
+    <p class="q">Ton vlog fait 5&nbsp;000 vues&nbsp;?</p>
+    <p class="big">On te rembourse entièrement ta place.</p>
+    <ol>
+      <li>Filme ta soirée, poste ton vlog dans les 7 jours.</li>
+      <li>Tague @ecoleaudace dans ta vidéo.</li>
+      <li>À 5&nbsp;000 vues, envoie-nous la capture en DM.</li>
+    </ol>
+    <p class="note">🏆 Le plus vu gagne un coaching one&nbsp;to&nbsp;one gratuit avec Mickaël Wu.</p>
+  </div>
+
   <p class="end">À très vite.<br>Micka</p>
 </main>
 <script>

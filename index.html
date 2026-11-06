@@ -591,6 +591,8 @@ html.m .tl-badge b { font-size: 50px; }
 .cine.night { background: #141813; }
 .cine canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .cine-bg { position: absolute; inset: 0; z-index: 3; }
+.cine-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: translateY(16%); z-index: 2; pointer-events: none; opacity: 0; mix-blend-mode: screen; transition: opacity .25s linear; }
+.cine.vid-on .cine-flame { display: none; }
 .cine-flame { position: absolute; left: 0; top: 0; z-index: 2; pointer-events: none; opacity: 0; will-change: transform, opacity; }
 .cine-flame canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .cine-flame .match { position: absolute; left: 50%; top: 78%; width: 260%; height: 2.6%; min-height: 4px; transform-origin: 0 50%; transform: rotate(24deg); border-radius: 3px; background: linear-gradient(90deg, #120806 0 5%, #3a2112 9%, #8a5a31 20%, #b98d5e 40%, #8d6a47 75%, rgba(80,60,40,.5)); box-shadow: 0 0 6px rgba(255,150,60,.25); z-index: -1; }
@@ -985,6 +987,13 @@ li.ok .ld2 path { transition: stroke-dashoffset .3s .6s cubic-bezier(.65,0,.35,1
 .tk-total span { font-size: 17px; font-weight: 700; }
 .tk-total b { font-size: 28px; font-weight: 800; color: #18231C; opacity: 1; }
 .tk-total { color: #18231C; }
+.tk-rule { padding: 20px 18px; border-radius: 20px; background: var(--card); display: flex; flex-direction: column; gap: 14px; }
+.tk-rule-big { margin: 0; font-size: 20px; font-weight: 700; line-height: 1.3; color: var(--fg); text-wrap: balance; }
+.tk-rule ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; counter-reset: r; }
+.tk-rule li { counter-increment: r; display: flex; gap: 12px; align-items: center; font-size: 15.5px; line-height: 1.35; color: var(--fg-2); }
+.tk-rule li::before { content: counter(r); flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--paper); color: var(--ink); font-weight: 800; font-size: 14px; display: grid; place-items: center; }
+.tk-rule-q { margin: 0 0 -8px; font-size: 16px; font-weight: 600; color: var(--fg-2); }
+.tk-rule-note { text-wrap: balance; margin: 0; font-size: 15px; font-weight: 600; color: var(--fg); }
 .tk-what { margin: 8px 0 0; font-size: 16px; font-weight: 600; line-height: 1.45; text-align: left; }
 .tk-val { margin: 6px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 11px; text-align: left; }
 .tk-val li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; font-weight: 600; line-height: 1.3; }
@@ -1167,6 +1176,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
 </style>
 
 <div id="cine" class="cine" hidden aria-label="Introduction AUDACE Experience">
+  <video class="cine-vid" id="cineVid" src="vid/allumette.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
   <div class="cine-flame" id="cineFlame" aria-hidden="true"><canvas></canvas><i class="match"></i></div>
   <div class="cine-bg" id="cineBg"></div>
   <canvas id="cineStars" aria-hidden="true"></canvas>
@@ -2229,7 +2239,7 @@ function dateScreen(){
       </div>
       <div class="dt-inc">
         <p class="dt-h">Au programme</p>
-        <ul>${["🍽️ Ton dîner de 6 sur mesure", "🎤 Les intervenants AUDACE", "🍕 Pizza et gaufre glacée offertes", "💬 Ta squad sur WhatsApp"].map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+        <ul>${["🍽️ Ton dîner de 6 sur mesure", "🎤 Les intervenants AUDACE", "🍕 Pizza et gaufre glacée offertes", "🎥 Ta place remboursée si ton vlog cartonne"].map(t => `<li>${esc(t)}</li>`).join("")}</ul>
       </div>
     </div>`;
   return shell("date", body, `<button class="q-btn" data-act="next">Continuer</button>`);
@@ -2262,6 +2272,18 @@ function ticketScreen(){
         <div class="tk-total"><span>Total</span><b class="tk-sum">${potesTotal()} €</b></div>
       </div>
       <p class="ld-note">Paiement sécurisé par Stripe. Tu reçois ta place par e-mail.</p>
+
+      <section class="tk-rule">
+        <h3 class="lp-h">La règle AUDACE 🎥</h3>
+        <p class="tk-rule-q">Ton vlog fait 5&nbsp;000 vues&nbsp;?</p>
+        <p class="tk-rule-big">On te rembourse entièrement ta place.</p>
+        <ol>
+          <li>Filme ta soirée, poste ton vlog dans les 7 jours.</li>
+          <li>Tague @ecoleaudace dans ta vidéo.</li>
+          <li>À 5&nbsp;000 vues, envoie-nous la capture en DM.</li>
+        </ol>
+        <p class="tk-rule-note">🏆 Le plus vu gagne un coaching one&nbsp;to&nbsp;one gratuit avec Mickaël Wu.</p>
+      </section>
 
       <section class="lp-sec">
         <h3 class="lp-h">Compris dans ton billet</h3>
@@ -2718,8 +2740,8 @@ const BURST_SEQ = ["e-cour", "r1", "p1", "e-tiktok", "ws-groupe", "p3", "m-parc"
 const CROPS = {"e-table": {"x": 53.4, "y": 50.5, "z": 1}, "m-conference": {"x": 62.6, "y": 45.4, "z": 1}, "n02": {"x": 4.5, "y": 43.2, "z": 1}, "n04": {"x": 0, "y": 46.8, "z": 1}, "n06": {"x": 12.8, "y": 42.4, "z": 1}, "p2": {"x": 9.5, "y": 55.2, "z": 1}, "p3": {"x": 40.2, "y": 48.9, "z": 1}, "q1": {"x": 76.3, "y": 48.2, "z": 1}, "q3": {"x": 100, "y": 36.1, "z": 1}, "q4": {"x": 37.9, "y": 50, "z": 1}, "r2": {"x": 100, "y": 46.8, "z": 1.1}, "vision": {"x": 0, "y": 50.4, "z": 1}, "ws-classe": {"x": 100, "y": 55.5, "z": 1}, "ws-coach": {"x": 53.5, "y": 47.1, "z": 1}, "ws-groupe": {"x": 86.7, "y": 43.7, "z": 1}};
 const cropStyle = n => { const c = CROPS[n]; return c ? ` style="object-position:${c.x}% ${c.y}%;transform-origin:${c.x}% ${c.y}%;transform:scale(${c.z})"` : ""; };
 const NOT_LINES = [
-  [32.0, "une conférence"], [33.25, "un networking normal"], [34.5, "une soirée de plus"], [35.5, "une formation en ligne bidon"],
-  [36.5, "de la motiv' Insta"], [37.25, "une formation déguisée"], [37.75, "un séminaire chiant"]
+  [32.03, "une conférence"], [33.28, "un networking normal"], [34.54, "une soirée de plus"], [35.54, "une formation en ligne bidon"],
+  [36.53, "de la motiv' Insta"], [37.28, "une formation déguisée"], [37.79, "un séminaire chiant"]
 ];
 function cineTimeline(){
   const ev = [
@@ -2727,10 +2749,10 @@ function cineTimeline(){
     [4.75, "bg", "dark"],
     [6.25, "out"],
     [9.5,  "type", { html: "et surtout… ils sont là où tu veux être ?", end: 10.9 }],
-    [11.5, "photo", "n10"], [12.0, "photo", "n07"], [12.5, "photo", "h2"],
+    [11.53, "photo", "n10"], [12.01, "photo", "n07"], [12.52, "photo", "h2"],
     [13.25, "nophoto"], [13.25, "hide"],
     [15.25, "type", { html: "si aujourd'hui t'es pas au niveau que tu veux…", end: 16.6 }],
-    [16.75, "photo", "n08"], [17.5, "photo", "e-table"], [18.0, "photo", "e-duo"],
+    [16.77, "photo", "n08"], [17.52, "photo", "e-table"], [18.03, "photo", "e-duo"],
     [18.75, "nophoto"], [18.75, "hide"],
     [20.0, "type", { html: "c'est pas une question de talent.<br><i>c'est une question d'entourage.</i>", end: 22.2 }],
     [22.5, "out"],
@@ -2738,24 +2760,34 @@ function cineTimeline(){
     [28.0, "hide"],
     [28.25, "type", { html: "bienvenue chez <i>AUDACE EXPERIENCE</i>", end: 29.75 }],
     [41.0, "nophoto"], [41.0, "hide"],
-    [41.25, "bg", "night"], [41.25, "stars", 1], [41.25, "boom"],
+    [41.27, "bg", "night"], [41.27, "stars", 1], [41.27, "boom"],
     [42.0, "type", { html: "entoure-toi des meilleurs.<br><i>et gagne.</i>", end: 44.9 }],
-    [45.75, "boom"], [46.5, "boom"], [47.0, "boom"],
+    [45.78, "boom"], [46.54, "boom"], [47.03, "boom"],
     [48.0, "erase", { end: 50.0 }],
     [48.4, "stars", 0], [48.4, "bg", ""],
     [50.7, "end"]
   ];
   // rafale de photos : une nouvelle image toutes les 0,25 s, comme 222
   const seq = []; let pool = [];
-  for (let t = 25.5, k = 0; t < 41.0 - 1e-6; t += .25, k++){
-    if (BURST_SEQ[k]) { seq.push([t, "photo", BURST_SEQ[k]]); continue; }
+  // une photo pile sur chaque temps de la musique (temps détectés dans audio/intro.mp3)
+  const BEATS = [25.81, 26.04, 26.29, 26.53, 26.78, 27.04, 27.29, 27.52, 27.78, 28.03, 28.29, 28.52, 28.78, 29.03, 29.29, 29.54, 29.78, 30.03, 30.29, 30.52, 30.77, 31.03, 31.29, 31.54, 31.77, 32.03, 32.28, 32.54, 32.77, 33.03, 33.28, 33.54, 33.77, 34.03, 34.28, 34.54, 34.79, 35.02, 35.28, 35.54, 35.77, 36.05, 36.28, 36.53, 36.79, 37.02, 37.28, 37.53, 37.79, 38.04, 38.27, 38.53, 38.79, 39.04, 39.27, 39.53, 39.78, 40.04, 40.27, 40.53, 40.78];
+  BEATS.forEach((t, k) => {
+    if (BURST_SEQ[k]) { seq.push([t, "photo", BURST_SEQ[k]]); return; }
     if (!pool.length) pool = BURST.slice(k ? 3 : 0).concat(k ? BURST.slice(0, 3) : []);
     seq.push([t, "photo", pool.shift()]);
-  }
+  });
   NOT_LINES.forEach(([t, txt]) => ev.push([t, "line", `<b>c'est pas</b> <i>${txt}</i>`]));
   return ev.concat(seq).sort((a, b) => a[0] - b[0]);
 }
 /* La flamme : position de la tête d'allumette (en part de l'écran), taille, opacité */
+/* Allumette réaliste (vidéo IA) : même trajet et mêmes moments que la flamme de l'intro 222.
+   Le raccord de la vidéo (7,8 s) tombe à 12,4 s de l'intro, caché sous la série de photos.
+   track = position de la flamme dans la vidéo, 10 points par seconde. */
+const MATCHV = { t0: 4.6, v0: 0, rate: 1, ratio: 720 / 1280, H: .5, track: [[0.392,0.456],[0.428,0.476],[0.474,0.534],[0.498,0.568],[0.461,0.502],[0.407,0.483],[0.381,0.513],[0.334,0.51],[0.336,0.505],[0.34,0.47],[0.359,0.472],[0.381,0.471],[0.394,0.472],[0.414,0.477],[0.421,0.476],[0.439,0.482],[0.454,0.491],[0.461,0.496],[0.482,0.504],[0.491,0.508],[0.499,0.514],[0.518,0.527],[0.528,0.535],[0.534,0.541],[0.543,0.55],[0.548,0.554],[0.554,0.559],[0.558,0.561],[0.557,0.563],[0.554,0.572],[0.548,0.575],[0.543,0.576],[0.531,0.579],[0.522,0.582],[0.51,0.584],[0.481,0.583],[0.471,0.58],[0.448,0.574],[0.427,0.566],[0.407,0.551],[0.386,0.53],[0.374,0.516],[0.375,0.506],[0.384,0.499],[0.4,0.497],[0.424,0.498],[0.449,0.501],[0.476,0.504],[0.508,0.511],[0.536,0.517],[0.567,0.524],[0.598,0.533],[0.626,0.539],[0.674,0.549],[0.687,0.552],[0.715,0.557],[0.743,0.556],[0.755,0.556],[0.779,0.554],[0.79,0.552],[0.798,0.551],[0.814,0.549],[0.819,0.548],[0.825,0.546],[0.831,0.539],[0.833,0.536],[0.838,0.531],[0.84,0.527],[0.843,0.524],[0.849,0.521],[0.85,0.516],[0.849,0.512],[0.84,0.5],[0.837,0.497],[0.832,0.494],[0.824,0.492],[0.822,0.493],[0.814,0.497],[0.403,0.494],[0.399,0.487],[0.397,0.48],[0.397,0.468],[0.397,0.473],[0.398,0.479],[0.4,0.481],[0.401,0.477],[0.404,0.467],[0.404,0.461],[0.405,0.46],[0.407,0.452],[0.411,0.445],[0.414,0.44],[0.419,0.432],[0.423,0.434],[0.426,0.437],[0.429,0.436],[0.434,0.431],[0.436,0.428],[0.437,0.425],[0.438,0.422],[0.44,0.42],[0.442,0.419],[0.447,0.416],[0.453,0.416],[0.454,0.418],[0.457,0.423],[0.461,0.425],[0.464,0.424],[0.466,0.42],[0.467,0.413],[0.467,0.413],[0.468,0.415],[0.467,0.421],[0.467,0.424],[0.469,0.422],[0.471,0.42],[0.478,0.422],[0.478,0.422],[0.482,0.422],[0.492,0.416],[0.493,0.416],[0.495,0.415],[0.501,0.418],[0.503,0.42],[0.505,0.421],[0.513,0.42],[0.517,0.421],[0.525,0.425],[0.529,0.429],[0.533,0.434],[0.538,0.433],[0.539,0.433],[0.542,0.435],[0.547,0.44],[0.547,0.44],[0.553,0.443],[0.557,0.445],[0.558,0.444],[0.564,0.447],[0.571,0.454],[0.573,0.455],[0.575,0.456],[0.579,0.456],[0.58,0.457],[0.583,0.461],[0.585,0.462],[0.587,0.463],[0.591,0.464],[0.593,0.465],[0.596,0.47],[0.597,0.474],[0.598,0.474],[0.602,0.474],[0.607,0.475],[0.606,0.474],[0.604,0.476],[0.603,0.479],[0.604,0.48],[0.607,0.484],[0.607,0.483],[0.608,0.483],[0.609,0.486],[0.61,0.49],[0.611,0.491],[0.615,0.492],[0.618,0.494],[0.622,0.498],[0.625,0.498],[0.625,0.498],[0.629,0.496],[0.63,0.496],[0.63,0.499],[0.635,0.512],[0.638,0.514],[0.639,0.514],[0.643,0.514],[0.645,0.519],[0.647,0.52],[0.648,0.524],[0.65,0.524],[0.649,0.526],[0.651,0.526],[0.653,0.527],[0.655,0.532],[0.657,0.533],[0.658,0.536],[0.661,0.535],[0.662,0.534],[0.664,0.538],[0.666,0.541],[0.666,0.544],[0.665,0.544],[0.664,0.542],[0.665,0.545],[0.666,0.544],[0.668,0.546],[0.666,0.543],[0.665,0.544],[0.664,0.542],[0.66,0.545],[0.658,0.545],[0.664,0.591],[0.676,0.58],[0.679,0.574],[0.679,0.574],[0.679,0.574]] };
+function matchPt(vt){
+  const T = MATCHV.track, k = vt * 10, i = Math.max(0, Math.min(T.length - 2, Math.floor(k))), u = Math.min(1, Math.max(0, k - i));
+  return [T[i][0] + (T[i + 1][0] - T[i][0]) * u, T[i][1] + (T[i + 1][1] - T[i][1]) * u];
+}
 const FLAME_KEYS = [
   [4.6,.60,.50,1.0,0],[4.75,.58,.50,1.5,1],[5.6,.60,.52,1.15,1],[6.6,.56,.50,.95,1],[9.0,.50,.45,1.0,1],[11.3,.52,.45,1.0,1],
   [13.25,.64,.44,1.0,1],[15.0,.79,.43,.95,1],[16.7,.93,.42,.85,1],[18.75,.80,.43,.9,1],[20.0,.86,.42,.9,1],[22.2,.90,.44,.75,1],
@@ -2842,7 +2874,7 @@ function cineTextSet(html, cls){
   };
   box.className = "cine-text" + (cls ? " " + cls : "");
   box.innerHTML = [...tmp.childNodes].map(wrap).join("");
-  C.chars = [...box.querySelectorAll(".ch")];
+  C.chars = [...box.querySelectorAll(".ch")]; C.typed = 0;
   return box;
 }
 function cinePhoto(name){
@@ -2850,15 +2882,44 @@ function cinePhoto(name){
   const num = (9 + (C.frame++ % 18)) + (C.frame % 2 ? "A" : "");
   bg.innerHTML = `<div class="film"><div class="film-bar t"><span class="film-num">${num}</span></div><div class="film-img${BRIGHT.has(name) ? " bright" : ""}"><img src="img/${name}.jpg" alt=""${cropStyle(name)}></div><div class="film-bar b"></div><span class="film-code">400-3</span></div>`;
 }
+/* Vibration + petit "boum" grave à chaque texte qui apparaît (comme l'intro 222).
+   Android : vibration native. iPhone (iOS 18+) : retour haptique via un interrupteur caché. */
+let CINE_AC = null, CINE_SW = null;
+function cineAudioUnlock(){ try { CINE_AC = CINE_AC || new (window.AudioContext || window.webkitAudioContext)(); if (CINE_AC.state === "suspended") CINE_AC.resume(); } catch(e){} }
+let CINE_LASTV = 0;
+/* Petite vibration (limitée à une toutes les 45 ms pour ne pas saturer) */
+function cineBuzz(ms){
+  const n = performance.now(); if (n - CINE_LASTV < 45) return; CINE_LASTV = n;
+  try {
+    if (navigator.vibrate) navigator.vibrate(ms);
+    else {
+      if (!CINE_SW){ CINE_SW = document.createElement("label"); CINE_SW.setAttribute("aria-hidden", "true"); CINE_SW.style.cssText = "position:fixed;left:-200px;top:0;opacity:0;pointer-events:none"; CINE_SW.innerHTML = '<input type="checkbox" switch tabindex="-1">'; document.body.appendChild(CINE_SW); }
+      CINE_SW.click();
+    }
+  } catch(e){}
+}
+/* Petit son synthétisé : clic de frappe ou "tac" de photo */
+function cineClick(freq, vol, dur, type){
+  if (!CINE_AC || CINE_AC.state !== "running" || CINE_AUDIO.paused) return;
+  try {
+    const t = CINE_AC.currentTime, o = CINE_AC.createOscillator(), g = CINE_AC.createGain();
+    o.type = type || "triangle"; o.frequency.setValueAtTime(freq, t); o.frequency.exponentialRampToValueAtTime(freq * .6, t + dur);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(CINE_AC.destination); o.start(t); o.stop(t + dur + .02);
+  } catch(e){}
+}
+function cineHit(){
+  cineBuzz(18);
+}
 function cineFire(e){
   const [, type, arg] = e, box = document.getElementById("cineText");
-  if (type === "type"){ cineTextSet(arg.html); C.typing = { s: e[0], e: arg.end }; C.erase = null; }
-  else if (type === "line"){ cineTextSet(arg, "left"); C.chars.forEach(c => c.classList.add("on")); C.typing = null; }
+  if (type === "type"){ cineHit(); cineTextSet(arg.html); C.typing = { s: e[0], e: arg.end }; C.erase = null; }
+  else if (type === "line"){ cineHit(); cineTextSet(arg, "left"); C.chars.forEach(c => c.classList.add("on")); C.typing = null; }
   else if (type === "out"){ box.classList.add("out"); }
   else if (type === "hide"){ box.innerHTML = ""; C.chars = []; C.typing = null; }
   else if (type === "erase"){ C.erase = { s: e[0], e: arg.end, n: C.chars.length }; C.typing = null; }
   else if (type === "bg"){ $cine.classList.remove("dark", "night"); if (arg) $cine.classList.add(arg); }
-  else if (type === "photo"){ cinePhoto(arg); }
+  else if (type === "photo"){ cinePhoto(arg); cineBuzz(12); }
   else if (type === "nophoto"){ document.getElementById("cineBg").innerHTML = ""; }
   else if (type === "stars"){ C.starTarget = arg; }
   else if (type === "boom"){ if (!reduceMotion){ cineBoom(); setTimeout(() => C && cineBoom(), 260); } }
@@ -2883,6 +2944,7 @@ function cineFrame(now){
   if (C.typing && C.chars.length){
     const k = Math.min(C.chars.length, Math.ceil((t - C.typing.s) / (C.typing.e - C.typing.s) * C.chars.length));
     for (let j = 0; j < k; j++) C.chars[j].classList.add("on");
+    if (k > (C.typed || 0)){ const ch = C.chars[k - 1].textContent; if (ch.trim()){ cineBuzz(6); } C.typed = k; }
   }
   if (C.erase){
     const keep = Math.max(0, Math.round(C.erase.n * (1 - (t - C.erase.s) / (C.erase.e - C.erase.s))));
@@ -2890,7 +2952,32 @@ function cineFrame(now){
   }
   // flamme
   const fl = document.getElementById("cineFlame"), f = flameAt(t);
-  if (f){
+  if (C.mv){
+    const mv = C.mv, vt = MATCHV.v0 + (t - MATCHV.t0) * MATCHV.rate;
+    fl.style.opacity = 0;
+    if (vt >= 0 && vt < 20.6){
+      mv.style.opacity = Math.max(0, Math.min(1, vt / .15, (20.6 - vt) / .5));
+      const drift = mv.currentTime - vt;
+      if (mv.paused){
+        // un seul lancement à la fois (sinon iPhone se bloque à force de recaler)
+        if (!C.mvPlay){
+          C.mvPlay = true;
+          try { if (Math.abs(drift) > .3) mv.currentTime = vt; } catch(e){}
+          mv.playbackRate = 1;
+          const p = mv.play(), done = () => { if (C) C.mvPlay = false; };
+          // lecture refusée (ex. iPhone en mode économie d'énergie) : on repasse sur la flamme dessinée
+          const fail = () => { if (!C) return; C.mvPlay = false; C.mvFail = (C.mvFail || 0) + 1; if (C.mvFail >= 2){ mv.style.opacity = 0; C.mv = null; $cine.classList.remove("vid-on"); } };
+          if (p && p.then) p.then(done, fail); else done();
+        }
+      } else if (Math.abs(drift) > .8 && now - (C.mvSeekAt || 0) > 1500){
+        // gros décalage (ex. son activé en cours de route) : un seul recalage, pas plus d'un toutes les 1,5 s
+        C.mvSeekAt = now; try { mv.currentTime = vt; } catch(e){}
+      } else {
+        // petit décalage : on accélère ou ralentit à peine, sans saut d'image
+        mv.playbackRate = Math.max(.92, Math.min(1.08, 1 - drift * .6));
+      }
+    } else { mv.style.opacity = 0; if (!mv.paused) mv.pause(); }
+  } else if (f){
     const [, x, y, s, a] = f, flare = Math.max(0, 1 - Math.max(0, t - 4.75) / 1.0) * (t >= 4.75 ? 1 : 0);
     const jit = reduceMotion ? 1 : 1 + Math.sin(now / 90) * .015 + Math.sin(now / 37) * .01;
     fl.style.opacity = a;
@@ -2932,9 +3019,19 @@ function cineStart(){
   fl.classList.toggle("css", !C.gl);
   if (!C.gl && !fl.querySelector(".flame")) fl.insertAdjacentHTML("beforeend", `<div class="flame" style="left:calc(50% - 20px);top:calc(78% - 64px)"><b></b><i></i></div>`);
   cineSize();
+  // précharge toutes les photos pour qu'elles tombent pile sur le temps, même sur téléphone
+  if (!window.__cinePre){ window.__cinePre = [...new Set(BURST.concat(BURST_SEQ, ["n10", "n07", "h2", "n08", "e-table", "e-duo"]))].map(n => { const im = new Image(); im.decoding = "async"; im.src = `img/${n}.jpg`; return im; }); }
+  C.mv = null; C.mvPlay = false; C.mvSeekAt = 0; C.mvFail = 0;
+  const mv = document.getElementById("cineVid");
+  if (mv && !reduceMotion){
+    const ok = () => { if (C){ C.mv = mv; $cine.classList.add("vid-on"); } };
+    mv.addEventListener("error", () => { $cine.classList.remove("vid-on"); if (C) C.mv = null; }, { once: true });
+    if (mv.readyState >= 2) ok(); else { mv.addEventListener("loadeddata", ok, { once: true }); try { mv.load(); } catch(e){} }
+  }
   C.t0 = null; C.started = performance.now(); C.sync = false;
   const snd = document.getElementById("cineSound");
   try { CINE_AUDIO.currentTime = 0; } catch(e){}
+  cineAudioUnlock();
   const pl = CINE_AUDIO.play();
   const go = () => { if (!C) return; if (C.t0 == null) C.t0 = performance.now() - CINE_AUDIO.currentTime * 1000; C.sync = true; snd.hidden = true; };
   if (pl && pl.then) pl.then(go).catch(() => { snd.hidden = false; }); else go();
@@ -2944,6 +3041,7 @@ function cineEnd(restart){
   if (!C) return;
   cancelAnimationFrame(C.raf); C = null;
   try { CINE_AUDIO.pause(); } catch(e){}
+  try { const mv = document.getElementById("cineVid"); mv.pause(); mv.style.opacity = 0; $cine.classList.remove("vid-on"); } catch(e){}
   if (restart === true) return;
   document.documentElement.style.overflow = ""; if ($frame) $frame.style.overflow = "";
   try { sessionStorage.setItem("audace-cine", "1"); } catch(e){}
@@ -2955,6 +3053,7 @@ document.getElementById("cineSound").addEventListener("click", e => {
   e.stopPropagation();
   if (!C) return;
   const el = C.t0 == null ? 0 : Math.max(0, (performance.now() - C.t0) / 1000);
+  cineAudioUnlock();
   CINE_AUDIO.play().then(() => { cineSeek(el); if (C) C.sync = true; e.target.hidden = true; }).catch(() => {});
 });
 $cine.addEventListener("click", () => cineEnd());
