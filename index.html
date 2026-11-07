@@ -1211,8 +1211,8 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
         <div class="ev-reg-h">Inscription</div>
         <div class="ev-reg-b">
           <div class="ev-going"><span class="avs"><img src="img/t-baptiste.jpg" alt=""><img src="img/t-mayline.jpg" alt=""><img src="img/d-astro.jpg" alt=""><img src="img/t-fanwu.jpg" alt=""><img src="img/d-anes.jpg" alt=""></span><span>Les élèves AUDACE à +5&nbsp;000&nbsp;€/mois seront là</span></div>
-          <p><b>30 €</b> ta place, -50 % pour tes proches.</p>
-          <a class="btn-light ev-btn" data-pay href="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z" target="_blank" rel="noopener">Réserver ma place</a>
+          <p><b>70 €</b> ta place, 15 € pour tes proches.</p>
+          <a class="btn-light ev-btn" data-pay href="https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G" target="_blank" rel="noopener">Réserver ma place</a>
         </div>
       </div>
       <div class="ev-host"><span class="ev-host-av ev-ph"><img src="img/yt-micka.jpg" alt="Mickaël Wu"></span><div><small>Présenté par</small><b>AUDACE · Mickaël Wu</b></div></div>
@@ -1275,7 +1275,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
     </div>
     <div class="there">
       <p>Ils seront tous là le 5 décembre. Viens les rencontrer.</p>
-      <a class="btn-light" data-pay href="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z" target="_blank" rel="noopener">Réserver ma place · 30 €</a>
+      <a class="btn-light" data-pay href="https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G" target="_blank" rel="noopener">Réserver ma place · 70 €</a>
     </div>
   </section>
 
@@ -1309,7 +1309,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
     <div class="ticket">
       <div>
         <div class="label" id="billet">Ton billet</div>
-        <div class="price">30 €</div>
+        <div class="price">70 €</div>
         <ul>
           <li>Ton entrée, et -50 % pour tes proches</li>
           <li>Pizza, gaufre avec sa boule de glace et eau offertes</li>
@@ -1317,7 +1317,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
         </ul>
       </div>
       <div class="cta">
-        <a class="btn" id="pay" data-pay href="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z" target="_blank" rel="noopener">Réserver ma place</a>
+        <a class="btn" id="pay" data-pay href="https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G" target="_blank" rel="noopener">Réserver ma place</a>
         <div class="small">Paiement sécurisé par carte bancaire</div>
       </div>
     </div>
@@ -1332,7 +1332,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
       </details>
       <details>
         <summary>Je peux venir avec mes parents ?</summary>
-        <p>Oui. Chaque proche que tu ramènes a -50 % : 15 € au lieu de 30 €. Tes parents, un ami, ton associé : c'est l'occasion de leur montrer ce que tu construis.</p>
+        <p>Oui. Chaque proche que tu ramènes paie seulement 15 €. Tes parents, un ami, ton associé : c'est l'occasion de leur montrer ce que tu construis.</p>
       </details>
       <details>
         <summary>Comment je donne le nom de mes invités ?</summary>
@@ -1375,10 +1375,10 @@ const $frame = (() => {
 })();
 function toTop(){ window.scrollTo(0, 0); if ($frame) $frame.scrollTop = 0; }
 
-const STRIPE ="https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z";
-const STRIPE_PROCHES ="https://buy.stripe.com/14AaEY8P1eQZ52T2r1gbm1y";   // 30 € + 15 € par proche (1 à 4, modifiable sur Stripe)
-/* Prix selon le niveau : 30 € (moins de 5 000 €/mois), 80 € (5 000 – 20 000 €/mois), 200 € (20 000 €/mois et +). Les proches restent à 15 €. */
-const TIERS = { base:{ prix:30, seul:"https://buy.stripe.com/00w8wQ6GT7ox0MD8Ppgbm1z", proches:"https://buy.stripe.com/14AaEY8P1eQZ52T2r1gbm1y" }, grow:{ prix:80, label:"Entrepreneur +5 000 €/mois", seul:"https://buy.stripe.com/fZu14o9T57oxdzp8Ppgbm1A", proches:"https://buy.stripe.com/eVq5kE0iveQZgLBe9Jgbm1B" }, elite:{ prix:200, label:"Entrepreneur +20 000 €/mois", seul:"https://buy.stripe.com/7sY5kE9T51092UL5Ddgbm1C", proches:"https://buy.stripe.com/eVqeVe4yLcIReDt3v5gbm1D" } };
+const STRIPE ="https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G";
+const STRIPE_PROCHES ="https://buy.stripe.com/4gM6oI5CP6kteDt2r1gbm1F";   // 70 € + 15 € par proche (1 à 2 maximum, réglé sur Stripe)
+/* Prix selon le niveau : 70 € (moins de 5 000 €/mois), 120 € (5 000 – 20 000 €/mois), 150 € (20 000 €/mois et +). Les proches restent à 15 €. */
+const TIERS = { base:{ prix:70, seul:"https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G", proches:"https://buy.stripe.com/4gM6oI5CP6kteDt2r1gbm1F" }, grow:{ prix:120, label:"Entrepreneur +5 000 €/mois", seul:"https://buy.stripe.com/00w6oI8P1aAJand4z9gbm1H", proches:"https://buy.stripe.com/8x2fZi6GTfV3fHxc1Bgbm1J" }, elite:{ prix:150, label:"Entrepreneur +20 000 €/mois", seul:"https://buy.stripe.com/3cI6oI6GTfV3cvlghRgbm1I", proches:"https://buy.stripe.com/4gM00k4yLfV38f50iTgbm1K" } };
 const tier = () => TIERS[S.answers.stage === "elite" ? "elite" : S.answers.stage === "grow" ? "grow" : "base"];
 const prix = () => tier().prix;
 
@@ -1720,7 +1720,17 @@ function go(i){
 const redraw = () => { animate = false; showQuiz(); };
 const isElite = () => S.answers.stage === "elite";
 const skipFor = id => false;   // l'écran « cercle » existe pour tous les niveaux, avec un texte adapté
-const next = () => { let i = S.idx + 1; while (skipFor(FLOW[i])) i++; go(i); };
+const LEAD_API = "https://hello-world-square-mode-2939.mickawu.workers.dev/lead";
+/* Garde l'e-mail pour les relances si la personne ne paie pas (seulement sur le vrai site). */
+function sendLead(){
+  try {
+    if (location.hostname !== "billetterie.mickaelwu.com" || !emailOk()) return;
+    const body = JSON.stringify({ email: S.answers.email.trim(), pay: payHref(), prix: potesTotal() });
+    if (navigator.sendBeacon) navigator.sendBeacon(LEAD_API, new Blob([body], { type: "text/plain" }));
+    else fetch(LEAD_API, { method: "POST", body, mode: "no-cors", keepalive: true });
+  } catch (e) {}
+}
+const next = () => { if (FLOW[S.idx] === "lead") sendLead(); let i = S.idx + 1; while (skipFor(FLOW[i])) i++; go(i); };
 const prev = () => { let i = S.idx - 1; while (["loading", "analyse", "genial", "mini"].includes(FLOW[i]) || skipFor(FLOW[i])) i--; go(i); };
 
 let loadTimer = null;
@@ -2220,12 +2230,12 @@ function leadScreen(){
   const a = S.answers;
   const body = `<div class="tl-lead">
       <h2 class="q-title">Où on t'envoie ta place ?</h2>
-      <p class="tl-sub">Ton billet et le lien du groupe WhatsApp de la soirée.</p>
+      <p class="tl-sub">Ton billet et ton lien Discord perso pour la soirée.</p>
       <label class="ld-f"><span>Ton e-mail</span><input id="leadEmail" class="q-write ld-in" type="email" inputmode="email" autocomplete="email" placeholder="prenom@email.com" value="${esc(a.email || "")}"></label>
       <label class="ld-f"><span>Ton numéro de téléphone</span>
         <span class="ld-ph"><select id="leadCc" class="q-write ld-cc" aria-label="Indicatif">${CCS.map(([c, f]) => `<option value="${c}"${(a.cc || "+33") === c ? " selected" : ""}>${f} ${c}</option>`).join("")}</select>
         <input id="leadPhone" class="q-write ld-in" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="6 12 34 56 78" value="${esc(a.phoneRaw || "")}"></span></label>
-      <p class="ld-note">Pas de spam. Juste les infos de la soirée.</p>
+      <p class="ld-note">Pas de spam. Juste les infos de la soirée, et un petit rappel si tu ne finalises pas ta place. Désinscription en 1 clic.</p>
     </div>`;
   return shell("lead", body, `<button class="q-btn" id="leadBtn" data-act="next" ${leadOk() ? "" : "disabled"}>Continuer</button>`);
 }
@@ -2377,11 +2387,11 @@ function ytPlay(b){
   b.replaceWith(f);
 }
 window.ytPlay = ytPlay;
-function potes(){ return Math.max(0, Math.min(4, +S.answers.potes || 0)); }
+function potes(){ return Math.max(0, Math.min(2, +S.answers.potes || 0)); }
 function potesTotal(){ return prix() + potes() * 15; }
 function potesLabel(){ return potes() ? `Réserver pour ${potes() + 1} · ${potesTotal()} €` : `Réserver ma place · ${prix()} €`; }
 function setPotes(d){
-  S.answers.potes = Math.max(0, Math.min(4, potes() + d)); save();
+  S.answers.potes = Math.max(0, Math.min(2, potes() + d)); save();
   const q = sel => document.querySelector(sel);
   if (q(".tk-n")) q(".tk-n").textContent = potes();
   if (q(".tk-sum")) q(".tk-sum").textContent = potesTotal() + " €";
