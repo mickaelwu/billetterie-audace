@@ -3214,10 +3214,93 @@ document.addEventListener("click", function(e){
   if (!a) return;
   e.preventDefault();
   var id = a.getAttribute("href").split("/").pop().split("?")[0];
+  var name = (a.getAttribute("aria-label") || "").replace("Lancer le témoignage de ", "").replace(" sur YouTube", "") || id;
   var f = document.createElement("iframe");
-  f.src = "https://www.youtube.com/embed/" + id + "?autoplay=1&rel=0&playsinline=1";
+  f.id = "yt_" + id; f.setAttribute("data-name", name);
+  f.src = "https://www.youtube.com/embed/" + id + "?autoplay=1&rel=0&playsinline=1&enablejsapi=1&origin=" + encodeURIComponent(location.origin);
   f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen"; f.allowFullscreen = true; f.title = "Témoignage AUDACE";
   a.replaceWith(f);
+  if (window.__trk) window.__trk.yt(f, name);
 });
+/* Suivi : écran du billet, sections vues, watchtime des vidéos, clic Réserver */
+(function(){
+  if (location.hostname !== "billetterie.mickaelwu.com") return;
+  var API = "https://hello-world-square-mode-2939.mickawu.workers.dev/t";
+  var sid = (Math.random().toString(36).slice(2, 10) + Date.now().toString(36)).replace(/[^a-z0-9]/g, "");
+  var D = { v: 1, ticket: 0, vu: {}, vid: {}, pay: 0 }, dirty = false;
+  function mark(){ dirty = true; }
+  function send(){
+    if (!dirty || !D.ticket) return; dirty = false;
+    try {
+      var o = JSON.parse(JSON.stringify(D));
+      for (var k in o.vid){ var r = o.vid[k]; r.sec = Math.round(r.sec); r.max = Math.round(r.max); r.dur = Math.round(r.dur); }
+      var b = JSON.stringify({ sid: sid, d: o });
+      if (navigator.sendBeacon) navigator.sendBeacon(API, new Blob([b], { type: "text/plain" }));
+      else fetch(API, { method: "POST", body: b, mode: "no-cors", keepalive: true });
+    } catch (e) {}
+  }
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "hidden") send(); });
+  window.addEventListener("pagehide", send);
+  setInterval(send, 20000);
+  function rec(k){ return D.vid[k] || (D.vid[k] = { play: 0, sec: 0, max: 0, dur: 0 }); }
+
+  /* Sections vues */
+  var SEC = { "Viens avec tes parents": "parents", "Qui vas-tu rencontrer": "rencontre", "Ils sont passés par AUDACE": "temoignages" };
+  var io = "IntersectionObserver" in window ? new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (!e.isIntersecting) return; var k = e.target.getAttribute("data-trk"); if (!D.vu[k]){ D.vu[k] = 1; mark(); } io.unobserve(e.target); });
+  }, { threshold: 0.35 }) : null;
+  var pend = false;
+  function scan(){
+    pend = false;
+    if (!D.ticket && document.querySelector(".tk-pay")){ D.ticket = 1; mark(); }
+    var els = document.querySelectorAll(".lp-sec:not([data-trk]), .lp-end:not([data-trk])");
+    for (var i = 0; i < els.length; i++){
+      var s = els[i], h = s.querySelector(".lp-h"), t = h ? h.textContent : "", k = s.classList.contains("lp-end") ? "fin" : "";
+      for (var p in SEC) if (t.indexOf(p) === 0) k = SEC[p];
+      s.setAttribute("data-trk", k || "x");
+      if (k && io) io.observe(s);
+    }
+  }
+  new MutationObserver(function(){ if (!pend){ pend = true; requestAnimationFrame(scan); } }).observe(document.body, { childList: true, subtree: true });
+  scan();
+
+  /* Vidéos hébergées sur le site */
+  var last = new WeakMap();
+  function vkey(v){ var s = (v.getAttribute && v.getAttribute("data-hls")) || ""; return s.indexOf("rencontre") >= 0 ? "rencontre" : s.indexOf("parents") >= 0 ? "parents" : ""; }
+  document.addEventListener("play", function(e){ var k = vkey(e.target); if (!k) return; rec(k).play = 1; last.set(e.target, e.target.currentTime); mark(); }, true);
+  document.addEventListener("seeking", function(e){ last.delete(e.target); }, true);
+  document.addEventListener("timeupdate", function(e){
+    var v = e.target, k = vkey(v); if (!k || v.paused || v.seeking) return;
+    var r = rec(k), t = v.currentTime, l = last.get(v);
+    if (l != null){ var d = t - l; if (d > 0 && d < 2) r.sec += d; }
+    last.set(v, t); if (t > r.max) r.max = t; if (v.duration && isFinite(v.duration)) r.dur = v.duration; mark();
+  }, true);
+
+  /* Témoignages YouTube (lecture dans la page) */
+  var YT = {};
+  window.addEventListener("message", function(e){
+    if (!/youtube/.test(e.origin)) return;
+    var m; try { m = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch (x) { return; }
+    if (!m || m.event !== "infoDelivery" || !m.info || !YT[m.id]) return;
+    var y = YT[m.id], r = rec("yt:" + y.name), i = m.info;
+    if (i.playerState != null) y.state = i.playerState;
+    if (i.duration) r.dur = i.duration;
+    if (i.currentTime != null){
+      var t = i.currentTime;
+      if (y.state === 1 && y.t != null){ var d = t - y.t; if (d > 0 && d < 2) r.sec += d; }
+      y.t = t; if (t > r.max) r.max = t; mark();
+    }
+  });
+  window.__trk = { yt: function(f, name){
+    YT[f.id] = { name: name, state: -1, t: null }; rec("yt:" + name).play = 1; mark();
+    f.addEventListener("load", function(){
+      var hello = function(){ try { f.contentWindow.postMessage(JSON.stringify({ event: "listening", id: f.id, channel: "widget" }), "*"); } catch (e) {} };
+      hello(); setTimeout(hello, 1000); setTimeout(hello, 3000);
+    });
+  } };
+
+  /* Clic sur Réserver */
+  document.addEventListener("click", function(e){ if (e.target.closest && e.target.closest("[data-pay]")){ D.pay = 1; mark(); send(); } }, true);
+})();
 </script>
 </body></html>
