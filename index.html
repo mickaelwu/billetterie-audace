@@ -1211,8 +1211,8 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
         <div class="ev-reg-h">Inscription</div>
         <div class="ev-reg-b">
           <div class="ev-going"><span class="avs"><img src="img/t-baptiste.jpg" alt=""><img src="img/t-mayline.jpg" alt=""><img src="img/d-astro.jpg" alt=""><img src="img/t-fanwu.jpg" alt=""><img src="img/d-anes.jpg" alt=""></span><span>Les élèves AUDACE à +5&nbsp;000&nbsp;€/mois seront là</span></div>
-          <p><b>70 €</b> ta place, 15 € pour tes proches.</p>
-          <a class="btn-light ev-btn" data-pay href="https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G" target="_blank" rel="noopener">Réserver ma place</a>
+          <p><b>50 €</b> ta place, 15 € pour tes proches.</p>
+          <a class="btn-light ev-btn" data-pay href="https://buy.stripe.com/cNi28s6GT9wFgLB5Ddgbm1L" target="_blank" rel="noopener">Réserver ma place</a>
         </div>
       </div>
       <div class="ev-host"><span class="ev-host-av ev-ph"><img src="img/yt-micka.jpg" alt="Mickaël Wu"></span><div><small>Présenté par</small><b>AUDACE · Mickaël Wu</b></div></div>
@@ -1275,7 +1275,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
     </div>
     <div class="there">
       <p>Ils seront tous là le 5 décembre. Viens les rencontrer.</p>
-      <a class="btn-light" data-pay href="https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G" target="_blank" rel="noopener">Réserver ma place · 70 €</a>
+      <a class="btn-light" data-pay href="https://buy.stripe.com/cNi28s6GT9wFgLB5Ddgbm1L" target="_blank" rel="noopener">Réserver ma place · 50 €</a>
     </div>
   </section>
 
@@ -1309,7 +1309,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
     <div class="ticket">
       <div>
         <div class="label" id="billet">Ton billet</div>
-        <div class="price">70 €</div>
+        <div class="price">50 €</div>
         <ul>
           <li>Ton entrée, et -50 % pour tes proches</li>
           <li>Pizza, gaufre avec sa boule de glace et eau offertes</li>
@@ -1317,7 +1317,7 @@ html.m .wa-lp-row img { flex: 0 0 82%; scroll-snap-align: center; }
         </ul>
       </div>
       <div class="cta">
-        <a class="btn" id="pay" data-pay href="https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G" target="_blank" rel="noopener">Réserver ma place</a>
+        <a class="btn" id="pay" data-pay href="https://buy.stripe.com/cNi28s6GT9wFgLB5Ddgbm1L" target="_blank" rel="noopener">Réserver ma place</a>
         <div class="small">Paiement sécurisé par carte bancaire</div>
       </div>
     </div>
@@ -1375,10 +1375,10 @@ const $frame = (() => {
 })();
 function toTop(){ window.scrollTo(0, 0); if ($frame) $frame.scrollTop = 0; }
 
-const STRIPE ="https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G";
-const STRIPE_PROCHES ="https://buy.stripe.com/4gM6oI5CP6kteDt2r1gbm1F";   // 70 € + 15 € par proche (1 à 2 maximum, réglé sur Stripe)
-/* Prix selon le niveau : 70 € (moins de 5 000 €/mois), 120 € (5 000 – 20 000 €/mois), 150 € (20 000 €/mois et +). Les proches restent à 15 €. */
-const TIERS = { base:{ prix:70, seul:"https://buy.stripe.com/9B64gAght5gpandd5Fgbm1G", proches:"https://buy.stripe.com/4gM6oI5CP6kteDt2r1gbm1F" }, grow:{ prix:120, label:"Entrepreneur +5 000 €/mois", seul:"https://buy.stripe.com/00w6oI8P1aAJand4z9gbm1H", proches:"https://buy.stripe.com/8x2fZi6GTfV3fHxc1Bgbm1J" }, elite:{ prix:150, label:"Entrepreneur +20 000 €/mois", seul:"https://buy.stripe.com/3cI6oI6GTfV3cvlghRgbm1I", proches:"https://buy.stripe.com/4gM00k4yLfV38f50iTgbm1K" } };
+const STRIPE ="https://buy.stripe.com/cNi28s6GT9wFgLB5Ddgbm1L";
+const STRIPE_PROCHES ="https://buy.stripe.com/6oUeVeghtaAJand7Llgbm1M";   // 50 € + 15 € par proche (1 à 2 maximum, réglé sur Stripe)
+/* Prix selon le niveau : 50 € (moins de 5 000 €/mois), 120 € (5 000 – 20 000 €/mois), 150 € (20 000 €/mois et +). Les proches restent à 15 €. */
+const TIERS = { base:{ prix:50, seul:"https://buy.stripe.com/cNi28s6GT9wFgLB5Ddgbm1L", proches:"https://buy.stripe.com/6oUeVeghtaAJand7Llgbm1M" }, grow:{ prix:120, label:"Entrepreneur +5 000 €/mois", seul:"https://buy.stripe.com/00w6oI8P1aAJand4z9gbm1H", proches:"https://buy.stripe.com/8x2fZi6GTfV3fHxc1Bgbm1J" }, elite:{ prix:150, label:"Entrepreneur +20 000 €/mois", seul:"https://buy.stripe.com/3cI6oI6GTfV3cvlghRgbm1I", proches:"https://buy.stripe.com/4gM00k4yLfV38f50iTgbm1K" } };
 const tier = () => TIERS[S.answers.stage === "elite" ? "elite" : S.answers.stage === "grow" ? "grow" : "base"];
 const prix = () => tier().prix;
 
