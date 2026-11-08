@@ -3227,10 +3227,10 @@ document.addEventListener("click", function(e){
   if (location.hostname !== "billetterie.mickaelwu.com") return;
   var API = "https://hello-world-square-mode-2939.mickawu.workers.dev/t";
   var sid = (Math.random().toString(36).slice(2, 10) + Date.now().toString(36)).replace(/[^a-z0-9]/g, "");
-  var D = { v: 1, ticket: 0, vu: {}, vid: {}, pay: 0 }, dirty = false;
+  var D = { v: 2, start: 1, max: 0, step: "", lead: 0, ticket: 0, vu: {}, vid: {}, pay: 0 }, dirty = true;
   function mark(){ dirty = true; }
   function send(){
-    if (!dirty || !D.ticket) return; dirty = false;
+    if (!dirty) return; dirty = false;
     try {
       var o = JSON.parse(JSON.stringify(D));
       for (var k in o.vid){ var r = o.vid[k]; r.sec = Math.round(r.sec); r.max = Math.round(r.max); r.dur = Math.round(r.dur); }
@@ -3242,6 +3242,7 @@ document.addEventListener("click", function(e){
   document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "hidden") send(); });
   window.addEventListener("pagehide", send);
   setInterval(send, 20000);
+  setTimeout(send, 4000);
   function rec(k){ return D.vid[k] || (D.vid[k] = { play: 0, sec: 0, max: 0, dur: 0 }); }
 
   /* Sections vues */
@@ -3253,6 +3254,12 @@ document.addEventListener("click", function(e){
   function scan(){
     pend = false;
     if (!D.ticket && document.querySelector(".tk-pay")){ D.ticket = 1; mark(); }
+    try {
+      var i = S.idx, L = FLOW.indexOf("lead");
+      if (i > D.max || !D.step){ D.max = Math.max(D.max, i); D.step = (D.max + 1) + " · " + FLOW[D.max]; mark(); }
+      if (!D.lead && L >= 0 && D.max > L){ D.lead = 1; mark(); }
+      if (!D.ticket && FLOW[i] === "ticket"){ D.ticket = 1; mark(); }
+    } catch (e) {}
     var els = document.querySelectorAll(".lp-sec:not([data-trk]), .lp-end:not([data-trk])");
     for (var i = 0; i < els.length; i++){
       var s = els[i], h = s.querySelector(".lp-h"), t = h ? h.textContent : "", k = s.classList.contains("lp-end") ? "fin" : "";
