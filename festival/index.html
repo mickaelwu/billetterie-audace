@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Festival des métiers d'internet</title>
+<meta name="description" content="Viens rencontrer les créateurs de contenu en vrai, à Paris, et découvre comment vivre des réseaux sociaux. Un événement gratuit de l'École AUDACE à Paris.">
+<meta property="og:title" content="Festival des métiers d'internet">
+<meta property="og:description" content="Viens rencontrer les créateurs de contenu en vrai, à Paris, et découvre comment vivre des réseaux sociaux. Présenté par l'École AUDACE.">
+<meta property="og:image" content="https://billetterie.mickaelwu.com/festival/img/n05.jpg">
+<meta property="og:url" content="https://billetterie.mickaelwu.com/festival/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:wght@700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout : façon VidCon. Bandeau photo plein écran avec le titre en très gros, grilles de grandes photos bord à bord avec les noms en capitales, peu de texte. DA AUDACE : bordeaux, ivoire. Titres en Anton, texte en Inter pour la lisibilité. */
+:root {
+  --noir: #110507;
+  --nuit: #2E0B12;
+  --merlot: #49091A;
+  --bordeaux: #68061D;
+  --taupe: #8A846E;
+  --sable: #C5BEA4;
+  --beige: #E1DACA;
+  --ivoire: #FDF0EA;
+  --blanc: #FEFDFB;
+  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --text: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--ivoire); color: var(--nuit); font-family: var(--text); font-size: 19px; line-height: 1.6; overflow-x: hidden; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--noir); }
+.in { max-width: 1200px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.pad { padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+p { margin: 0; }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 400; text-transform: uppercase; line-height: 1.1; text-wrap: balance; }
+.btn { display: inline-block; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 16px; padding: 17px 30px; border-radius: 999px; background: var(--ivoire); color: var(--bordeaux); transition: transform .15s; }
+.btn.dark { background: var(--bordeaux); color: var(--ivoire); }
+.btn:hover { transform: translateY(-2px); }
+a:focus-visible, summary:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+
+/* barres du haut */
+.brandbar { background: var(--noir); }
+.brandbar .in { display: flex; justify-content: center; padding-block: 22px; }
+.logo { text-decoration: none; text-align: center; color: var(--ivoire); font-family: "EB Garamond", Georgia, serif; font-weight: 700; font-size: 32px; letter-spacing: .05em; line-height: 1; }
+.logo small { display: block; font-family: var(--text); font-size: 10px; font-weight: 600; letter-spacing: .34em; margin-top: 6px; color: var(--sable); }
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--merlot); }
+.nav .in { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 64px; }
+.links { display: flex; gap: 30px; }
+.links a { color: var(--ivoire); text-decoration: none; text-transform: uppercase; font-weight: 600; font-size: 15px; letter-spacing: .06em; }
+.nav .btn { padding: 11px 20px; font-size: 14px; }
+
+/* bandeau photo */
+.banner { position: relative; min-height: clamp(460px, 62vh, 640px); display: flex; align-items: flex-end; overflow: hidden; background: var(--noir); }
+.banner > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,5,7,.15) 0%, rgba(17,5,7,.35) 45%, rgba(46,11,18,.92) 100%); }
+.banner .in { position: relative; z-index: 1; width: 100%; padding-block: 56px; display: flex; flex-direction: column; gap: 18px; color: var(--ivoire); }
+.banner h1 { font-size: clamp(54px, 9vw, 132px); color: var(--ivoire); max-width: 12ch; }
+.banner .promise { font-size: clamp(20px, 2.4vw, 26px); font-weight: 600; max-width: 34ch; color: var(--ivoire); }
+.banner .meta { font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--beige); }
+.banner .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+
+/* en-tête de section */
+.sec { padding-block: 88px 40px; }
+.sec h2 { font-size: clamp(46px, 7vw, 96px); color: var(--bordeaux); }
+.sec .sub { margin-top: 16px; font-size: 20px; max-width: 46ch; color: var(--merlot); }
+
+/* grille de mentors, bord à bord */
+.mosaic { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.tile { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--nuit); }
+.tile > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile.soon > img { filter: blur(14px) saturate(.6) brightness(.55); transform: scale(1.15); }
+.tile::after { content: ""; position: absolute; inset: 62% 0 0; background: linear-gradient(transparent, rgba(17,5,7,.7)); }
+.tile .q { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; font-family: var(--display); font-size: clamp(64px, 9vw, 120px); color: rgba(253,240,234,.85); }
+.tile.ini { background: var(--merlot); }
+.tile.ini:nth-child(3n) { background: var(--bordeaux); }
+.tile.ini:nth-child(4n+1) { background: var(--nuit); }
+.tile.ini .q { color: rgba(253,240,234,.16); font-size: clamp(80px, 11vw, 150px); padding-bottom: 12%; }
+.tile.ini::after { content: none; }
+.tile .who { position: absolute; left: 16px; right: 16px; bottom: 14px; z-index: 2; color: var(--ivoire); }
+.tile .who b { display: block; font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(18px, 1.8vw, 24px); line-height: 1; text-shadow: 0 1px 8px rgba(17,5,7,.5); }
+.tile .who span { display: block; font-size: 14px; font-weight: 500; color: var(--beige); }
+.tile .who .proof { display: block; margin-top: 4px; font-style: normal; font-size: 13px; font-weight: 600; color: var(--ivoire); text-shadow: 0 1px 8px rgba(17,5,7,.6); }
+
+/* pôles, grandes photos */
+.poles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pole { position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: var(--noir); color: var(--ivoire); }
+.pole > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pole::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,5,7,0) 35%, rgba(46,11,18,.94) 100%); }
+.pole .body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 28px; display: flex; flex-direction: column; gap: 10px; }
+.pole h3 { font-size: clamp(32px, 3.4vw, 46px); }
+.pole .jobs { font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: .06em; color: var(--sable); }
+.pole p { font-size: 18px; color: var(--ivoire); max-width: 30ch; }
+
+/* programme */
+.agenda { display: grid; gap: 14px; padding-bottom: 88px; }
+.slot { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 28px; align-items: baseline; background: var(--blanc); border-radius: 14px; padding: 28px 30px; }
+.slot time { font-family: var(--display); font-size: 50px; line-height: 1; color: var(--bordeaux); font-variant-numeric: tabular-nums; }
+.slot h3 { font-size: 30px; line-height: 1.05; color: var(--nuit); margin-bottom: 8px; }
+.slot p { max-width: 60ch; }
+
+/* bandes photo avec texte */
+.photoband { position: relative; min-height: 560px; display: flex; align-items: center; overflow: hidden; background: var(--noir); color: var(--ivoire); }
+.photoband > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photoband::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(46,11,18,.94) 0%, rgba(46,11,18,.78) 45%, rgba(17,5,7,.2) 100%); }
+.photoband .in { position: relative; z-index: 1; width: 100%; padding-block: 80px; }
+.photoband .box { max-width: 560px; display: flex; flex-direction: column; gap: 20px; }
+.photoband h2 { font-size: clamp(46px, 6.4vw, 84px); color: var(--ivoire); }
+.photoband p { font-size: 20px; }
+
+/* retours */
+.reviews { background: var(--merlot); color: var(--ivoire); }
+.reviews .in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; padding-block: 88px; }
+.reviews h2 { font-size: clamp(46px, 6vw, 80px); color: var(--ivoire); }
+.reviews .quote { margin-top: 24px; font-size: 22px; font-weight: 500; line-height: 1.5; }
+.reviews .quote small { display: block; margin-top: 12px; font-size: 16px; font-weight: 500; color: var(--sable); }
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.shots img { width: 100%; border-radius: 22px; display: block; }
+
+/* organisateur */
+.host { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; background: var(--blanc); }
+.host > img { width: 100%; height: 100%; min-height: 420px; object-fit: cover; object-position: 50% 30%; display: block; }
+.host .txt { padding: 72px max(20px, 5vw); display: flex; flex-direction: column; gap: 20px; justify-content: center; }
+.host h2 { font-size: clamp(42px, 5.4vw, 72px); color: var(--bordeaux); }
+.host blockquote { margin: 0; font-size: 22px; font-weight: 600; color: var(--bordeaux); }
+
+/* faq */
+.qa { display: grid; gap: 12px; padding-bottom: 96px; }
+.qa details { max-width: 860px; width: 100%; }
+.final .box p { text-align: center; }
+details { background: var(--blanc); border-radius: 14px; padding: 2px 26px; }
+summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; padding-block: 20px; font-weight: 600; font-size: 20px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-family: var(--display); font-size: 28px; line-height: 1; color: var(--bordeaux); }
+details[open] summary::after { content: "–"; }
+details p { padding-bottom: 22px; max-width: 62ch; }
+
+/* fin */
+.final { min-height: 520px; text-align: center; }
+.final::after { background: linear-gradient(180deg, rgba(46,11,18,.7), rgba(46,11,18,.94)); }
+.final .box { max-width: 720px; margin-inline: auto; align-items: center; }
+.final small { font-size: 16px; color: var(--sable); }
+footer { background: var(--noir); color: var(--sable); }
+footer .in { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-block: 26px; font-size: 15px; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
+@media (max-width: 900px) {
+  .links { display: none; }
+  .mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .poles { grid-template-columns: minmax(0, 1fr); }
+  .pole { aspect-ratio: 4 / 5; }
+  .slot { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .reviews .in, .host { grid-template-columns: minmax(0, 1fr); }
+  .photoband::after { background: rgba(46,11,18,.82); }
+  .sec { padding-block: 64px 32px; }
+  body { font-size: 18px; }
+}
+</style>
+
+</head>
+<body>
+<div class="brandbar"><div class="in"><a class="logo" href="#top">AUDACE<small>ÉCOLE D'ENTREPRENEURIAT</small></a></div></div>
+<nav class="nav">
+  <div class="in">
+    <div class="links"><a href="#mentors">Mentors</a><a href="#poles">Les pôles</a><a href="#programme">Programme</a><a href="#parents">Parents</a><a href="#faq">FAQ</a></div>
+    <a class="btn" href="#inscription">S'inscrire</a>
+  </div>
+</nav>
+
+<main id="top">
+  <header class="banner">
+    <img src="img/n05.jpg" alt="La salle pleine lors d'une conférence AUDACE">
+    <div class="in">
+      <span class="meta">Paris · Un samedi après-midi · Gratuit</span>
+      <h1>Festival des métiers d'internet</h1>
+      <p class="promise">Viens rencontrer les créateurs de contenu en vrai, à Paris, et découvre comment vivre des réseaux sociaux.</p>
+      <div class="ctas"><a class="btn" href="#inscription">Je veux ma place →</a></div>
+    </div>
+  </header>
+
+  <section id="mentors">
+    <div class="in sec">
+      <h2>Les mentors</h2>
+      <p class="sub">Des YouTubeurs, des streamers et des entrepreneurs qui vivent d'internet. Ils te racontent comment.</p>
+    </div>
+    <div class="mosaic">
+      <div class="tile"><img src="img/m-calvin.jpg" alt="Mickaël Wu" style="object-position:50% 30%"><div class="who"><b>Mickaël Wu</b><em class="proof">1 400+ élèves accompagnés</em></div></div>
+      <div class="tile"><img src="img/m-nil.jpg" alt="Nil · BeOnePourcent" style="object-position:50% 30%"><div class="who"><b>Nil · BeOnePourcent</b><em class="proof">734 k abonnés YouTube</em></div></div>
+      <div class="tile"><img src="img/m-sk.jpg" alt="SK" style="object-position:50% 30%"><div class="who"><b>SK</b><em class="proof">Streamer · 150 k abonnés</em></div></div>
+      <div class="tile"><img src="img/m-loann.jpg" alt="Loann" style="object-position:50% 30%"><div class="who"><b>Loann</b><em class="proof">300 k abonnés · 3 sociétés YouTube</em></div></div>
+      <div class="tile"><img src="img/m-mido.jpg" alt="Mido" style="object-position:50% 30%"><div class="who"><b>Mido</b><em class="proof">300 k abonnés</em></div></div>
+      <div class="tile"><img src="img/m-micka.jpg" alt="Calvin" style="object-position:50% 30%"><div class="who"><b>Calvin</b><em class="proof">Fondateur de Miho · e-commerce</em></div></div>
+      <div class="tile"><img src="img/m-mrdreamax.jpg" alt="MrDreamax" style="object-position:50% 30%"><div class="who"><b>MrDreamax</b><em class="proof">4 M d'abonnés tous réseaux</em></div></div>
+      <div class="tile"><img src="img/t-bobby.jpg" alt="BobbySan" style="object-position:50% 30%"><div class="who"><b>BobbySan</b><em class="proof">N°1 podcast de France</em></div></div>
+      <div class="tile"><img src="img/m-sonia.jpg" alt="Sonia" style="object-position:50% 30%"><div class="who"><b>Sonia</b><em class="proof">Fondatrice de Karabina · e-commerce</em></div></div>
+      <div class="tile"><img src="img/m-adrien.jpg" alt="Adrien MD" style="object-position:50% 30%"><div class="who"><b>Adrien MD</b><em class="proof">+200 k abonnés pour Ellie Yatta en 3 mois</em></div></div>
+      <div class="tile"><img src="img/m-shahryar.jpg" alt="Shahryar" style="object-position:50% 30%"><div class="who"><b>Shahryar</b><em class="proof">Head of Content de Marvin Ndiaye</em></div></div>
+      <div class="tile soon"><img src="img/m-conference.jpg" alt=""><span class="q" aria-hidden="true">?</span><div class="who"><b>Et des surprises</b><em class="proof">Annoncées sur @ecoleaudace</em></div></div>
+    </div>
+  </section>
+
+  <section id="poles">
+    <div class="in sec">
+      <h2>Trouve ton métier</h2>
+      <p class="sub">Trois pôles. Écoute-les tous, puis choisis celui qui te parle.</p>
+    </div>
+    <div class="poles">
+      <article class="pole">
+        <img src="img/pole-createur.jpg" alt="Un jeune créateur qui se filme chez lui, sur son canapé" loading="lazy">
+        <div class="body"><span class="jobs">YouTubeur · Streamer</span><h3>Devenir créateur</h3><p>Construis ta communauté et vis de ton contenu. Avec Nil, SK, Loann et Mido.</p></div>
+      </article>
+      <article class="pole">
+        <img src="img/pole-business.jpg" alt="Une jeune entrepreneuse qui travaille sur son ordinateur" loading="lazy">
+        <div class="body"><span class="jobs">Coach en ligne · Infopreneur · E-commerce · Agence</span><h3>Lancer ton business en ligne</h3><p>Vends ton propre produit, ou ce que tu sais déjà faire. Avec Mickaël Wu, Calvin, MrDreamax, BobbySan et Sonia.</p></div>
+      </article>
+      <article class="pole">
+        <img src="img/pole-entreprises.jpg" alt="Un téléphone avec les applications Instagram, TikTok, YouTube et LinkedIn" loading="lazy">
+        <div class="body"><span class="jobs">Community manager · Stratège de contenu</span><h3>Travailler pour des entreprises</h3><p>Crée du contenu pour des marques et gagne en expérience. Avec Adrien MD et Shahryar.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="programme">
+    <div class="in sec">
+      <h2>Le programme</h2>
+      <p class="sub">Un samedi après-midi, de 14h à 18h.</p>
+    </div>
+    <div class="in agenda">
+      <div class="slot"><time>14h00</time><div><h3>Accueil et présentation des mentors</h3><p>Tous les mentors du festival montent sur scène.</p></div></div>
+      <div class="slot"><time>14h30</time><div><h3>Les parcours, sur scène</h3><p>Dans chaque pôle, un ou deux mentors racontent leur histoire, présentent leur métier, donnent leurs conseils et te disent pour quel profil il est fait.</p></div></div>
+      <div class="slot"><time>15h30</time><div><h3>Questions-réponses</h3><p>Chaque pôle dans sa salle. Une heure pour poser toutes tes questions à ceux qui en vivent.</p></div></div>
+      <div class="slot"><time>16h30</time><div><h3>Networking et photos</h3><p>Rencontre les créateurs, les mentors et les autres jeunes qui veulent se lancer.</p></div></div>
+    </div>
+  </section>
+
+  <section id="parents" class="photoband">
+    <img src="img/parents.jpg" alt="Un père et son fils ado qui partagent une glace en ville" loading="lazy" style="object-position:70% 30%">
+    <div class="in"><div class="box">
+      <h2>Viens avec tes parents</h2>
+      <p>Tes parents se demandent si internet peut vraiment devenir un métier ? Amène-les, ils sont les bienvenus. Ils verront des jeunes qui en vivent, leurs mentors, et l'équipe de l'École AUDACE répondra à toutes leurs questions.</p>
+    </div></div>
+  </section>
+
+  <section class="host">
+    <img src="img/vision.jpg" alt="Mickaël Wu en selfie devant ses élèves en atelier" loading="lazy" style="object-position:30% 50%;min-height:480px">
+    <div class="txt">
+      <h2>Organisé par l'École AUDACE</h2>
+      <p>Fondée par Mickaël Wu, qui a lancé son premier business à 9 ans et quitté Paris-Dauphine pour vivre d'internet. Plus de 1 400 élèves accompagnés sur YouTube, Instagram et TikTok.</p>
+      <blockquote>« Je donne aux jeunes ce que j'aurais aimé avoir. »</blockquote>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="in sec"><h2>FAQ</h2></div>
+    <div class="in qa">
+      <details><summary>C'est vraiment gratuit ?</summary><p>Oui. L'entrée est gratuite, il suffit de s'inscrire. Les places sont limitées.</p></details>
+      <details><summary>Je peux venir avec mes parents ?</summary><p>Oui, et on te le conseille. Un espace leur est réservé pour poser toutes leurs questions à l'équipe de l'École AUDACE.</p></details>
+      <details><summary>Il faut déjà avoir un business ou une chaîne ?</summary><p>Non. Le festival est fait pour découvrir les métiers d'internet, même si tu pars de zéro.</p></details>
+      <details><summary>C'est quand, et où ?</summary><p>Un samedi après-midi, de 14h à 18h, à Paris. La date et le lieu exacts sont annoncés sur cette page et sur @ecoleaudace.</p></details>
+    </div>
+  </section>
+
+  <section id="inscription" class="photoband final">
+    <img src="img/n11.jpg" alt="Les élèves AUDACE avec leurs t-shirts AUDACE" loading="lazy">
+    <div class="in"><div class="box">
+      <h2>Réserve ta place</h2>
+      <p>Places limitées. Les inscriptions ouvrent très bientôt. Laisse-nous un message sur WhatsApp et on te prévient en premier.</p>
+      <a class="btn" href="https://wa.me/33695739669?text=Je%20veux%20%C3%AAtre%20pr%C3%A9venu%20pour%20le%20Festival%20des%20m%C3%A9tiers%20d%27internet" target="_blank" rel="noopener">Me prévenir sur WhatsApp →</a>
+      <small>WhatsApp : 06 95 73 96 69</small>
+    </div></div>
+  </section>
+</main>
+
+<footer><div class="in"><span>Festival des métiers d'internet · École AUDACE</span><span>Paris</span></div></footer>
+
+</body>
+</html>
