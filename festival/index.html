@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Festival des métiers d'internet</title>
-<meta name="description" content="Viens rencontrer les créateurs de contenu en vrai, à Paris, et découvre comment vivre des réseaux sociaux. Un événement gratuit de l'École AUDACE à Paris.">
+<meta name="description" content="Viens rencontrer les créateurs de contenu en vrai, à Paris, et découvre comment vivre des réseaux sociaux. Un événement gratuit de l'École AUDACE.">
 <meta property="og:title" content="Festival des métiers d'internet">
 <meta property="og:description" content="Viens rencontrer les créateurs de contenu en vrai, à Paris, et découvre comment vivre des réseaux sociaux. Présenté par l'École AUDACE.">
 <meta property="og:image" content="https://billetterie.mickaelwu.com/festival/img/n05.jpg">
@@ -55,14 +55,19 @@ a:focus-visible, summary:focus-visible { outline: 3px solid currentColor; outlin
 .nav .btn { padding: 11px 20px; font-size: 14px; }
 
 /* bandeau photo */
-.banner { position: relative; min-height: clamp(460px, 62vh, 640px); display: flex; align-items: flex-end; overflow: hidden; background: var(--noir); }
-.banner > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,5,7,.15) 0%, rgba(17,5,7,.35) 45%, rgba(46,11,18,.92) 100%); }
-.banner .in { position: relative; z-index: 1; width: 100%; padding-block: 56px; display: flex; flex-direction: column; gap: 18px; color: var(--ivoire); }
-.banner h1 { font-size: clamp(54px, 9vw, 132px); color: var(--ivoire); max-width: 12ch; }
-.banner .promise { font-size: clamp(20px, 2.4vw, 26px); font-weight: 600; max-width: 34ch; color: var(--ivoire); }
-.banner .meta { font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--beige); }
-.banner .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.banner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); min-height: clamp(520px, 74vh, 720px); background: var(--bordeaux); color: var(--ivoire); }
+.banner .txt { display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 64px clamp(24px, 5vw, 72px); }
+.banner .pic { position: relative; overflow: hidden; background: var(--noir); }
+.banner .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 50%; display: block; }
+.banner h1 { font-size: clamp(50px, 6.2vw, 104px); color: var(--ivoire); }
+.banner .promise { font-size: clamp(19px, 1.7vw, 23px); font-weight: 500; line-height: 1.5; max-width: 30ch; color: var(--ivoire); }
+.banner .meta { font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--sable); }
+.banner .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+@media (max-width: 860px) {
+  .banner { grid-template-columns: 1fr; min-height: 0; }
+  .banner .pic { order: -1; aspect-ratio: 3 / 2; }
+  .banner .txt { padding: 36px 20px 48px; gap: 18px; }
+}
 
 /* en-tête de section */
 .sec { padding-block: 88px 40px; }
@@ -173,13 +178,13 @@ footer .in { display: flex; justify-content: space-between; flex-wrap: wrap; gap
 
 <main id="top">
   <header class="banner">
-    <img src="img/n05.jpg" alt="La salle pleine lors d'une conférence AUDACE">
-    <div class="in">
+    <div class="txt">
       <span class="meta">Paris · Un samedi après-midi · Gratuit</span>
       <h1>Festival des métiers d'internet</h1>
       <p class="promise">Viens rencontrer les créateurs de contenu en vrai, à Paris, et découvre comment vivre des réseaux sociaux.</p>
       <div class="ctas"><a class="btn" href="#inscription">Je veux ma place →</a></div>
     </div>
+    <div class="pic"><img src="img/n05.jpg" alt="La salle pleine lors d'une conférence AUDACE"></div>
   </header>
 
   <section id="mentors">
